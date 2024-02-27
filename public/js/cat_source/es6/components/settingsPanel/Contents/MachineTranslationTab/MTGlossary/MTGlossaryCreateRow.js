@@ -68,7 +68,7 @@ export const MTGlossaryCreateRow = ({engineId, row, setRows}) => {
             .catch(() => dispatchErrorNotification())
         }
       })
-      .catch(() => dispatchErrorNotification())
+      .catch(({errors}) => dispatchErrorNotification(errors))
   }
 
   const onSubmit = (e) => {
@@ -113,11 +113,11 @@ export const MTGlossaryCreateRow = ({engineId, row, setRows}) => {
     })
     setIsWaitingResult(false)
   }
-  const dispatchErrorNotification = () => {
+  const dispatchErrorNotification = (message) => {
     CatToolActions.addNotification({
       title: 'Glossary create error',
       type: 'error',
-      text: 'Error creating glossary',
+      text: message ?? 'Error creating glossary',
       position: 'br',
       allowHtml: true,
       timer: 5000,
