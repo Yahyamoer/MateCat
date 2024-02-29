@@ -9,7 +9,6 @@
 
 namespace Analysis\Workers;
 
-use Analysis\AnalysisDao;
 use Analysis\Queue\RedisKeys;
 use Constants\Ices;
 use Constants_TranslationStatus;
@@ -25,6 +24,7 @@ use Exception;
 use FeatureSet;
 use Jobs_JobDao;
 use LQA\QA;
+use Model\Analysis\AnalysisDao;
 use PDOException;
 use PostProcess;
 use Predis\Connection\ConnectionException;
@@ -38,6 +38,7 @@ use TaskRunner\Exceptions\EndQueueException;
 use TaskRunner\Exceptions\NotSupportedMTException;
 use TaskRunner\Exceptions\ReQueueException;
 use Translations_SegmentTranslationDao;
+use WordCount\CounterModel;
 
 /**
  * Class TMAnalysisWorker
@@ -887,7 +888,7 @@ class TMAnalysisWorker extends AbstractWorker {
 
             $database = Database::obtain();
             foreach ( $_analyzed_report as $job_info ) {
-                $counter = new \WordCount_CounterModel();
+                $counter = new CounterModel();
                 $database->begin();
                 $wordCountStructs[] = $counter->initializeJobWordCount( $job_info[ 'id_job' ], $job_info[ 'password' ] );
                 $database->commit();
