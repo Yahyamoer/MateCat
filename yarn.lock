@@ -1759,10 +1759,10 @@
     "@sentry/types" "7.98.0"
     "@sentry/utils" "7.98.0"
 
-"@sentry/babel-plugin-component-annotate@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@sentry/babel-plugin-component-annotate/-/babel-plugin-component-annotate-2.14.0.tgz#e62f448dd3c922a6d32e9f1c0a5ae85fa6ec22c2"
-  integrity sha512-FWU4+Lx6fgxjAkwmc3S9j1Q/6pqKZyZzfi52B+8WMNw7a5QjGXgxc5ucBazZYgrcsJKCFBp4QG3PPxNAieFimQ==
+"@sentry/babel-plugin-component-annotate@2.14.1":
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/@sentry/babel-plugin-component-annotate/-/babel-plugin-component-annotate-2.14.1.tgz#3eb759809e051d341071b9e1d5a2e8cf35b67c56"
+  integrity sha512-NHVOr6m0vOoh1UNSZr+OpWQERjjQM7lO48WN/N/MzobIIxc2pymw2KAq3lNJ1SnVAy1t9RNP8u+g6aEFEMGZ/w==
 
 "@sentry/browser@^7.40.0":
   version "7.104.0"
@@ -1777,13 +1777,13 @@
     "@sentry/types" "7.104.0"
     "@sentry/utils" "7.104.0"
 
-"@sentry/bundler-plugin-core@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.14.0.tgz#8814ed1a4b290bce914c98e0316199ba44712abe"
-  integrity sha512-jVM47EPs8Na2z5HOWgthLFhpHLU9hwL2wY4TzHEnS1Bj+ODgXFa8QcIxQR2SO+W+L8YhSbY7z+BpPsYTpeZWUg==
+"@sentry/bundler-plugin-core@2.14.1":
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.14.1.tgz#419fcd2e792f8b4fc6bb6eb735d09c2325ba1697"
+  integrity sha512-JbYkeQQ+FTy4KjuJmnjjRGKv1LOSH+Q9cbcMHkr+vNrwAbdxkQ7WURGEKUCFTciIekToMCOiFk+g3FQlRmzLPg==
   dependencies:
     "@babel/core" "7.18.5"
-    "@sentry/babel-plugin-component-annotate" "2.14.0"
+    "@sentry/babel-plugin-component-annotate" "2.14.1"
     "@sentry/cli" "^2.22.3"
     "@sentry/node" "^7.60.0"
     "@sentry/utils" "^7.60.0"
@@ -1907,12 +1907,12 @@
   dependencies:
     "@sentry/types" "7.98.0"
 
-"@sentry/webpack-plugin@2.14.0":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@sentry/webpack-plugin/-/webpack-plugin-2.14.0.tgz#6351ced08b19a4627995ebbcbe3f15c92fcad761"
-  integrity sha512-6lYxabSSkoMqz+zsACamYfu8amLSIiYFj+CQBLvWKSW7N6wJvaZKfFVHj5bGlmU7K0X0eJyQdxdk6VfLg129Jw==
+"@sentry/webpack-plugin@2.14.1":
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/@sentry/webpack-plugin/-/webpack-plugin-2.14.1.tgz#99e4be63fa8d04effb9fee40b904fe7f5fa4340f"
+  integrity sha512-mOGu/D68MQW46eya3z0r3Xk9Cv6/bfqW4zC2AAX7KwJdlq5/6+W0PLo0v3kNxUGRXWg732eHb4wTKGrShmIu2A==
   dependencies:
-    "@sentry/bundler-plugin-core" "2.14.0"
+    "@sentry/bundler-plugin-core" "2.14.1"
     unplugin "1.0.1"
     uuid "^9.0.0"
 
@@ -9524,10 +9524,10 @@ webpack-virtual-modules@^0.5.0:
   resolved "https://registry.yarnpkg.com/webpack-virtual-modules/-/webpack-virtual-modules-0.5.0.tgz#362f14738a56dae107937ab98ea7062e8bdd3b6c"
   integrity sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==
 
-webpack@5.90.1:
-  version "5.90.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.90.1.tgz#62ab0c097d7cbe83d32523dbfbb645cdb7c3c01c"
-  integrity sha512-SstPdlAC5IvgFnhiRok8hqJo/+ArAbNv7rhU4fnWGHNVfN59HSQFaxZDSAL3IFG2YmqxuRs+IU33milSxbPlog==
+webpack@5.90.2:
+  version "5.90.2"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.90.2.tgz#189686a8a292427076db9907d495625345805fab"
+  integrity sha512-ziXu8ABGr0InCMEYFnHrYweinHK2PWrMqnwdHk2oK3rRhv/1B+2FnfwYv5oD+RrknK/Pp/Hmyvu+eAsaMYhzCw==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^1.0.5"
@@ -9722,9 +9722,9 @@ xmlchars@^2.2.0:
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
 xss@^1.0.8:
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/xss/-/xss-1.0.14.tgz#4f3efbde75ad0d82e9921cc3c95e6590dd336694"
-  integrity sha512-og7TEJhXvn1a7kzZGQ7ETjdQVS2UfZyTlsEdDOqvQF7GoxNfY+0YLCzBy1kPdsDDx4QuNAonQPddpsn6Xl/7sw==
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/xss/-/xss-1.0.15.tgz#96a0e13886f0661063028b410ed1b18670f4e59a"
+  integrity sha512-FVdlVVC67WOIPvfOwhoMETV72f6GbW7aOabBC3WxN/oUdoEMDyLz4OgRv5/gck2ZeNqEQu+Tb0kloovXOfpYVg==
   dependencies:
     commander "^2.20.3"
     cssfilter "0.0.10"
