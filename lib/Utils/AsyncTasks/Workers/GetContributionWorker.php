@@ -16,9 +16,9 @@ use Engines_MMT;
 use Engines_DeepL;
 use FeatureSet;
 use INIT;
+use Jobs_JobStruct;
 use Matecat\SubFiltering\AbstractFilter;
 use PostProcess;
-use Projects_MetadataDao;
 use Stomp;
 use Matecat\SubFiltering\MateCatFilter;
 use TaskRunner\Commons\AbstractElement;
@@ -403,7 +403,7 @@ class GetContributionWorker extends AbstractWorker {
 
     /**
      * @param ContributionRequestStruct $contributionStruct
-     * @param $jobStruct
+     * @param Jobs_JobStruct $jobStruct
      * @param $targetLang
      * @param $featureSet
      * @param bool $isCrossLang
@@ -425,6 +425,13 @@ class GetContributionWorker extends AbstractWorker {
         $_config[ 'id_user' ]        = $this->_extractAvailableKeysForUser( $contributionStruct );
         $_config[ 'num_result' ]     = $contributionStruct->resultNum;
         $_config[ 'isConcordance' ]  = $contributionStruct->concordanceSearch;
+
+        $jobsMetadataDao = new \Jobs\MetadataDao();
+        $dialect_strict = $jobsMetadataDao->get($jobStruct->id, $jobStruct->password, 'dialect_strict');
+
+        if($dialect_strict !== null){
+            $_config['dialect_strict'] = $dialect_strict->value == 1;
+        }
 
         if ( $contributionStruct->concordanceSearch && $contributionStruct->fromTarget ) {
             //invert direction

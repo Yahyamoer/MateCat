@@ -117,6 +117,8 @@ class NewController extends ajaxController {
 
     private $deepl_id_glossary;
 
+    private $dialect_strict;
+
     private function setBadRequestHeader() {
         $this->httpHeader = 'HTTP/1.0 400 Bad Request';
     }
@@ -183,6 +185,7 @@ class NewController extends ajaxController {
                 'id_qa_model_template'       => [ 'filter' => FILTER_VALIDATE_INT ],
                 'payable_rate_template_id'   => [ 'filter' => FILTER_VALIDATE_INT ],
                 'payable_rate_template_name' => [ 'filter' => FILTER_SANITIZE_STRING ],
+                'dialect_strict'             => [ 'filter' => FILTER_SANITIZE_STRING ],
                 'lexiqa'                     => [ 'filter' => FILTER_VALIDATE_BOOLEAN ],
                 'speech2text'                => [ 'filter' => FILTER_VALIDATE_BOOLEAN ],
                 'tag_projection'             => [ 'filter' => FILTER_VALIDATE_BOOLEAN ],
@@ -246,6 +249,7 @@ class NewController extends ajaxController {
             $this->__validateUserMTEngine();
             $this->__validateMMTGlossaries();
             $this->__validateDeepLGlossaryParams();
+            $this->__validateDialectStrictParam();
             $this->__appendFeaturesToProject();
             $this->__generateTargetEngineAssociation();
         } catch ( Exception $ex ) {
@@ -663,6 +667,11 @@ class NewController extends ajaxController {
             $projectStructure[ 'payable_rate_model_id' ] = $this->payableRateModelTemplate->id;
         }
 
+        if( $this->dialect_strict ) {
+            $projectStructure[ 'dialect_strict' ] = $this->dialect_strict;
+        }
+
+
         //set features override
         $projectStructure[ 'project_features' ] = $this->projectFeatures;
 
@@ -901,6 +910,10 @@ class NewController extends ajaxController {
         // project_info
         if ( !empty( $this->postInput[ 'project_info' ] ) ) {
             $this->metadata[ 'project_info' ] = $this->postInput[ 'project_info' ];
+        }
+
+        if ( !empty( $this->postInput[ 'dialect_strict' ] ) ) {
+            $this->metadata[ 'dialect_strict' ] = $this->postInput[ 'dialect_strict' ];
         }
 
         //override metadata with explicitly declared keys ( we maintain metadata for backward compatibility )
@@ -1222,6 +1235,34 @@ class NewController extends ajaxController {
 
         if ( !empty( $this->postInput[ 'deepl_id_glossary' ] ) ) {
             $this->deepl_id_glossary = $this->postInput[ 'deepl_id_glossary' ];
+        }
+    }
+
+    /**
+     * Validate `dialect_strict` param vs target languages
+     *
+     * Example: {"it-IT": true, "en-US": false, "fr-FR": false}
+     *
+     * @throws Exception
+     */
+    private function __validateDialectStrictParam()
+    {
+        if ( !empty( $this->postInput[ 'dialect_strict' ] ) ) {
+
+            $targets = explode( ',', $this->postInput[ 'target_lang' ] );
+            $dialectStrictObj = json_decode(html_entity_decode($this->postInput[ 'dialect_strict' ]), true);
+
+            foreach($targets as $target){
+                if(!isset($dialectStrictObj[$target])){
+                    throw new \Exception('Wrong `dialect_strict` object, missing value for ' . $target);
+                }
+
+                if(!is_bool($dialectStrictObj[$target])){
+                    throw new \Exception('Wrong `dialect_strict` object, not boolean declared value for ' . $target);
+                }
+            }
+
+            $this->dialect_strict = html_entity_decode($this->postInput[ 'dialect_strict' ]);
         }
     }
 
