@@ -411,67 +411,6 @@ class ProjectManager {
 
     }
 
-    /**
-     *  Save custom project metadata
-     *
-     * This is where, among other things, we put project options.
-     *
-     * Project options may need to be sanitized so that we can silently ignore impossible combinations,
-     * and we can apply defaults when those are missing.
-     *
-     */
-    private function saveMetadata() {
-
-        $options = $this->projectStructure[ 'metadata' ];
-        $dao = new Projects_MetadataDao();
-
-        // "From API" flag
-        if(isset($this->projectStructure['from_api']) and $this->projectStructure['from_api'] == true){
-            $options['from_api'] = 1;
-        }
-
-        if ( $this->projectStructure[ 'sanitize_project_options' ] ) {
-            $options = $this->sanitizeProjectOptions( $options );
-        }
-
-        if(!empty($options)){
-            foreach ( $options as $key => $value ) {
-                $dao->set(
-                    $this->projectStructure[ 'id_project' ],
-                    $key,
-                    $value
-                );
-            }
-        }
-
-        // add MMT Glossaries here
-        if( $this->projectStructure[ 'mmt_glossaries' ] and !empty( $this->projectStructure[ 'mmt_glossaries' ] ) ){
-            $dao->set(
-                $this->projectStructure[ 'id_project' ],
-                'mmt_glossaries',
-                $this->projectStructure[ 'mmt_glossaries' ]
-            );
-        }
-
-        // add DeepL params here
-        if( $this->projectStructure[ 'deepl_formality' ] and !empty( $this->projectStructure[ 'deepl_formality' ] ) ){
-            $dao->set(
-                $this->projectStructure[ 'id_project' ],
-                'deepl_formality',
-                $this->projectStructure[ 'deepl_formality' ]
-            );
-        }
-
-        if( $this->projectStructure[ 'deepl_id_glossary' ] and !empty( $this->projectStructure[ 'deepl_id_glossary' ] ) ){
-            $dao->set(
-                $this->projectStructure[ 'id_project' ],
-                'deepl_id_glossary',
-                $this->projectStructure[ 'deepl_id_glossary' ]
-            );
-        }
-
-    }
-
     private function sanitizeProjectOptions( $options ) {
         $sanitizer = new ProjectOptionsSanitizer( $options );
 
