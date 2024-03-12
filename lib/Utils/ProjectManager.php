@@ -345,7 +345,7 @@ class ProjectManager {
         }
     }
 
-     /**
+    /**
      *  Save custom project metadata
      *
      * This is where, among other things, we put project options.
