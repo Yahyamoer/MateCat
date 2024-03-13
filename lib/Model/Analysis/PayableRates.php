@@ -20,7 +20,9 @@ class Analysis_PayableRates {
         '100%_PUBLIC' => 30,
         'REPETITIONS' => 30,
         'INTERNAL'    => 60,
-        'MT'          => 72
+        'MT'          => 72,
+        'ICE'         => 0,
+        'ICE_MT'      => 30,
     ];
 
     protected static $langPair2MTpayableRates = [
@@ -36,7 +38,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ]
         ],
         "en" => [
@@ -51,7 +55,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 62
+                'MT'          => 62,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             'tr' => [
                 'NO_MATCH'    => 100,
@@ -64,7 +71,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "de" => [
                 'NO_MATCH'    => 100,
@@ -77,7 +87,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "sq" => [
                 'NO_MATCH'    => 100,
@@ -90,7 +103,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "sv" => [
                 'NO_MATCH'    => 100,
@@ -103,7 +119,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "is" => [
                 'NO_MATCH'    => 100,
@@ -116,7 +135,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "ms" => [
                 'NO_MATCH'    => 100,
@@ -129,7 +151,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "fr" => [
                 'NO_MATCH'    => 100,
@@ -142,7 +167,10 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
+
             ],
             "pt" => [
                 'NO_MATCH' => 100,
@@ -156,7 +184,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 62
+                'MT'          => 62,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "es" => [
                 'NO_MATCH'    => 100,
@@ -169,7 +199,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "nl" => [
                 'NO_MATCH'    => 100,
@@ -182,7 +214,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 62
+                'MT'          => 62,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "pl" => [
                 'NO_MATCH'    => 100,
@@ -195,7 +229,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "uk" => [
                 'NO_MATCH'    => 100,
@@ -208,7 +244,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "hi" => [
                 'NO_MATCH'    => 100,
@@ -221,7 +259,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "ru" => [
                 'NO_MATCH'    => 100,
@@ -234,7 +274,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 82
+                'MT'          => 82,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "zh" => [
                 'NO_MATCH'    => 100,
@@ -247,7 +289,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 82
+                'MT'          => 82,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "zh-HK" => [
                 'NO_MATCH'    => 100,
@@ -260,7 +304,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 90
+                'MT'          => 90,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "ko" => [
                 'NO_MATCH'    => 100,
@@ -273,7 +319,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 82
+                'MT'          => 82,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "lt" => [
                 'NO_MATCH'    => 100,
@@ -286,7 +334,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "ja" => [
                 'NO_MATCH'    => 100,
@@ -299,7 +349,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "he" => [
                 'NO_MATCH'    => 100,
@@ -312,7 +364,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "ga" => [
                 'NO_MATCH'    => 100,
@@ -325,7 +379,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "km" => [
                 'NO_MATCH'    => 100,
@@ -338,7 +394,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "tl" => [
                 'NO_MATCH'    => 100,
@@ -351,7 +409,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "xh" => [
                 'NO_MATCH'    => 100,
@@ -364,7 +424,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "th" => [
                 'NO_MATCH'    => 100,
@@ -377,7 +439,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "cs" => [
                 'NO_MATCH'    => 100,
@@ -390,7 +454,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77
+                'MT'          => 77,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
         ]
     ];
