@@ -7,6 +7,12 @@ import {AdvancedOptionsTab} from './Contents/AdvancedOptionsTab'
 import {TranslationMemoryGlossaryTab} from './Contents/TranslationMemoryGlossaryTab'
 import {ProjectTemplate} from './ProjectTemplate/ProjectTemplate'
 import {SCHEMA_KEYS} from '../../hooks/useProjectTemplates'
+import {ANALYSIS_SCHEMA_KEYS, AnalysisTab} from './Contents/AnalysisTab'
+import {
+  QF_SCHEMA_KEYS,
+  QualityFrameworkTab,
+} from './Contents/QualityFrameworkTab'
+import useTemplates from '../../hooks/useTemplates'
 
 let tabOpenFromQueryString = new URLSearchParams(window.location.search).get(
   'openTab',
@@ -16,6 +22,8 @@ export const SETTINGS_PANEL_TABS = {
   translationMemoryGlossary: 'tm',
   machineTranslation: 'mt',
   advancedOptions: 'options',
+  analysis: 'analysis',
+  qualityFramework: 'qf',
 }
 
 export const TEMPLATE_PROPS_BY_TAB = {
@@ -25,6 +33,8 @@ export const TEMPLATE_PROPS_BY_TAB = {
     SCHEMA_KEYS.pretranslate100,
   ],
   [SETTINGS_PANEL_TABS.machineTranslation]: [SCHEMA_KEYS.mt],
+  [SETTINGS_PANEL_TABS.qualityFramework]: [SCHEMA_KEYS.qaModelTemplateId],
+  [SETTINGS_PANEL_TABS.analysis]: [SCHEMA_KEYS.payableRateTemplateId],
   [SETTINGS_PANEL_TABS.advancedOptions]: [
     SCHEMA_KEYS.speech2text,
     SCHEMA_KEYS.tagProjection,
@@ -35,29 +45,49 @@ export const TEMPLATE_PROPS_BY_TAB = {
   ],
 }
 
-const DEFAULT_CONTENTS = [
-  {
-    id: SETTINGS_PANEL_TABS.translationMemoryGlossary,
-    label: 'Translation Memory and Glossary',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-    component: <TranslationMemoryGlossaryTab />,
-  },
-  {
-    id: SETTINGS_PANEL_TABS.machineTranslation,
-    label: 'Machine Translation',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-    component: <MachineTranslationTab />,
-  },
-  {
-    id: SETTINGS_PANEL_TABS.advancedOptions,
-    label: 'Advanced settings',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-    component: <AdvancedOptionsTab />,
-  },
-]
+const DEFAULT_CONTENTS = (isCattool = config.is_cattool) => {
+  return [
+    {
+      id: SETTINGS_PANEL_TABS.translationMemoryGlossary,
+      label: 'Translation Memory and Glossary',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      component: <TranslationMemoryGlossaryTab />,
+    },
+    {
+      id: SETTINGS_PANEL_TABS.machineTranslation,
+      label: 'Machine Translation',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      component: <MachineTranslationTab />,
+    },
+    ...(!isCattool && config.isLoggedIn
+      ? [
+          {
+            id: SETTINGS_PANEL_TABS.qualityFramework,
+            label: 'Quality framework',
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+            component: <QualityFrameworkTab />,
+          },
+          {
+            id: SETTINGS_PANEL_TABS.analysis,
+            label: 'Analysis',
+            description:
+              'Determines what discount percentage is applied to each match category. More details <a href="#">here</a>.',
+            component: <AnalysisTab />,
+          },
+        ]
+      : []),
+    {
+      id: SETTINGS_PANEL_TABS.advancedOptions,
+      label: 'Advanced settings',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+      component: <AdvancedOptionsTab />,
+    },
+  ]
+}
 
 export const DEFAULT_ENGINE_MEMORY = {
   id: 1,
@@ -87,7 +117,7 @@ export const SettingsPanel = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [tabs, setTabs] = useState(() => {
-    const initialState = DEFAULT_CONTENTS.map((tab) => ({
+    const initialState = DEFAULT_CONTENTS().map((tab) => ({
       ...tab,
       isOpened: Object.values(SETTINGS_PANEL_TABS).some(
         (value) => value === tabOpenFromQueryString,
@@ -99,6 +129,10 @@ export const SettingsPanel = ({
     tabOpenFromQueryString = false
     return initialState
   })
+
+  // templates quality framework
+  const qualityFrameworkTemplates = useTemplates(QF_SCHEMA_KEYS)
+  const analysisTemplates = useTemplates(ANALYSIS_SCHEMA_KEYS)
 
   const wrapperRef = useRef()
 
@@ -150,6 +184,8 @@ export const SettingsPanel = ({
         modifyingCurrentTemplate,
         checkSpecificTemplatePropsAreModified,
         isEnabledProjectTemplateComponent,
+        qualityFrameworkTemplates,
+        analysisTemplates,
       }}
     >
       <div

@@ -112,7 +112,7 @@
 
 .settings-panel-contentwrapper-container {
   font-size: 14px;
-  padding: 20px;
+  padding: 0 20px 0 20px;
   overflow-y: auto;
   max-height: calc(100vh - 340px);
   height: 100%;
@@ -161,7 +161,7 @@
   margin: 0 !important;
 }
 
-.settings-panel-project-template {
+.settings-panel-templates {
   display: flex;
   align-items: end;
 
@@ -185,9 +185,23 @@
       color: $white;
     }
   }
+
+  .custom-dropdown {
+    padding: 10px;
+
+    .dropdown__option--is-active-option {
+      color: $white;
+      background-color: $darkBlue;
+    }
+  }
+
+  .select {
+    color: $black;
+    border-color: $grey8;
+  }
 }
 
-.settings-panel-project-template-container-select {
+.settings-panel-templates-container-select {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -200,7 +214,7 @@
   }
 
   .template-name {
-    width: 200px;
+    width: 236px;
     height: 38px;
     font-size: 16px;
     padding: 9px 0 9px 12px;
@@ -213,25 +227,27 @@
   }
 }
 
-.settings-panel-project-template-container-buttons {
+.settings-panel-templates-container-buttons {
   display: flex;
   gap: 8px;
   margin-left: 8px;
 
-  .template-button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    height: 40px;
-    background-color: unset;
-    border: 1px solid $grey4;
-    color: white;
-    font-size: 16px;
-    padding: 0 12px;
-    cursor: pointer;
-    line-height: 1;
+  button.template-button {
+    border-radius: unset;
+    font-weight: normal;
+    color: black !important;
+    box-shadow: inset 0 0 0 1px $grey8;
+  }
+
+  button.template-button-white {
+    border-radius: unset;
+    font-weight: normal;
+    color: white !important;
+    box-shadow: inset 0 0 0 1px $white;
 
     &:hover {
+      background-color: unset !important;
+      box-shadow: inset 0 0 0 1px $white !important;
       opacity: 0.8;
     }
   }
@@ -247,7 +263,15 @@
   }
 
   .button-more-items {
+    border-radius: unset;
+    font-weight: normal;
+    color: black;
+    box-shadow: inset 0 0 0 1px $grey8;
     padding: 0;
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px $black;
+    }
 
     .menu-button-wrapper .icon {
       justify-content: center;
@@ -260,9 +284,23 @@
     }
   }
 
-  .button-save-changes {
+  .button-more-items-project-templates {
+    box-shadow: inset 0 0 0 1px $white;
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px $white;
+      opacity: 0.8;
+    }
+  }
+
+  button.button-save-changes {
     background-color: $grey4;
-    color: black;
+    color: black !important;
+
+    &:hover {
+      background-color: $grey4 !important;
+      opacity: 0.8;
+    }
   }
 }
 
@@ -272,7 +310,7 @@
   border-radius: 16px;
 }
 
-.settings-panel-project-template-button-more {
+.settings-panel-templates-button-more {
   min-width: 240px;
   border: unset !important;
 
@@ -281,13 +319,65 @@
   }
 }
 
-.settings-panel-project-template {
-  .custom-dropdown {
-    padding: 10px;
-
-    .dropdown__option--is-active-option {
-      color: $white;
-      background-color: $darkBlue;
+.settings-panel-subtemplates-select {
+  .select-item-default {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $black;
+    & > svg {
+      opacity: 1;
     }
+  }
+  .select-item-default-active {
+    margin-right: 4px;
+  }
+
+  .dropdown__option {
+    > :first-child {
+      flex-grow: 1;
+      text-align: left;
+    }
+  }
+}
+
+.settings-panel-subtemplates {
+  background-color: unset;
+  padding: unset;
+
+  .settings-panel-templates-container-buttons {
+    .button-more-items {
+      .menu-button-wrapper .icon {
+        color: $black;
+      }
+    }
+  }
+
+  .settings-panel-templates-container-select {
+    .template-name {
+      margin-top: 1px;
+    }
+  }
+}
+
+.settings-panel-subtemplates-select-unsaved {
+  .select {
+    color: $translatedBlue !important;
+  }
+}
+
+.settings-panel-box {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  float: left;
+  width: 100%;
+
+  h2 {
+    padding: 10px 0 10px 0;
+  }
+
+  .settings-panel-contentwrapper-tab-background {
+    text-align: left;
   }
 }

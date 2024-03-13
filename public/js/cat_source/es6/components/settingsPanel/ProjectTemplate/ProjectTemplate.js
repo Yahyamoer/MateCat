@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {SettingsPanelContext} from '../SettingsPanelContext'
 import {
@@ -17,6 +17,7 @@ import {TemplateSelect} from './TemplateSelect'
 import {IconPin} from '../../icons/IconPin'
 import {IconSave} from '../../icons/IconSave'
 import {IconSaveChanges} from '../../icons/IconSaveChanges'
+import {BUTTON_MODE, BUTTON_SIZE, Button} from '../../common/Button/Button'
 
 export const TEMPLATE_MODIFIERS = {
   CREATE: 'create',
@@ -41,47 +42,44 @@ export const ProjectTemplate = ({portalTarget}) => {
     ({isTemporary}) => isTemporary,
   )
 
-  const updateTemplate = useCallback(
-    (updatedTemplate = currentProjectTemplate) => {
-      /* eslint-disable no-unused-vars */
-      const {
-        created_at,
-        id,
-        uid,
-        modified_at,
-        isTemporary,
-        isSelected,
-        ...modifiedTemplate
-      } = {
-        ...updatedTemplate,
-        name: updatedTemplate.name,
-      }
-      /* eslint-enable no-unused-vars */
-      setIsRequestInProgress(true)
+  const updateTemplate = (updatedTemplate = currentProjectTemplate) => {
+    /* eslint-disable no-unused-vars */
+    const {
+      created_at,
+      id,
+      uid,
+      modified_at,
+      isTemporary,
+      isSelected,
+      ...modifiedTemplate
+    } = {
+      ...updatedTemplate,
+      name: updatedTemplate.name,
+    }
+    /* eslint-enable no-unused-vars */
+    setIsRequestInProgress(true)
 
-      updateProjectTemplate({
-        id: updatedTemplate.id,
-        template: modifiedTemplate,
+    updateProjectTemplate({
+      id: updatedTemplate.id,
+      template: modifiedTemplate,
+    })
+      .then((template) => {
+        setProjectTemplates((prevState) =>
+          prevState
+            .filter(({isTemporary}) => !isTemporary)
+            .map((templateItem) =>
+              templateItem.id === template.id
+                ? {...template, isSelected: true}
+                : templateItem,
+            ),
+        )
       })
-        .then((template) => {
-          setProjectTemplates((prevState) =>
-            prevState
-              .filter(({isTemporary}) => !isTemporary)
-              .map((templateItem) =>
-                templateItem.id === template.id
-                  ? {...template, isSelected: true}
-                  : templateItem,
-              ),
-          )
-        })
-        .catch((error) => console.log(error))
-        .finally(() => {
-          setIsRequestInProgress(false)
-          setTemplateModifier()
-        })
-    },
-    [currentProjectTemplate, setProjectTemplates],
-  )
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setIsRequestInProgress(false)
+        setTemplateModifier()
+      })
+  }
 
   // Notify to server when user deleted a tmKey, MT or MT glossary from templates and sync project templates state
   useEffect(() => {
@@ -192,7 +190,6 @@ export const ProjectTemplate = ({portalTarget}) => {
   return (
     <ProjectTemplateContext.Provider
       value={{
-        updateTemplate,
         templateName,
         setTemplateName,
         isRequestInProgress,
@@ -201,48 +198,54 @@ export const ProjectTemplate = ({portalTarget}) => {
         setTemplateModifier,
       }}
     >
-      <div className="settings-panel-project-template">
-        <div className="settings-panel-project-template-container-select">
+      <div className="settings-panel-templates">
+        <div className="settings-panel-templates-container-select">
           <h3>Project template</h3>
           <TemplateSelect
             {...{projectTemplates, setProjectTemplates, currentProjectTemplate}}
           />
           {templateModifier && <TemplateNameInput />}
         </div>
-        <div className="settings-panel-project-template-container-buttons">
+        <div className="settings-panel-templates-container-buttons">
           {!templateModifier ? (
             <>
               {isActiveSetAsDefault && (
-                <button
-                  className="template-button"
-                  data-testid="set-as-default-template"
+                <Button
+                  className="template-button-white"
+                  size={BUTTON_SIZE.MEDIUM}
+                  mode={BUTTON_MODE.OUTLINE}
+                  testId="set-as-default-template"
                   disabled={isRequestInProgress}
                   onClick={setCurrentProjectTemplateAsDefault}
                 >
                   <IconPin />
                   Set as default
-                </button>
+                </Button>
               )}
               {isModifyingTemplate && !isStandardTemplateBool && (
-                <button
-                  className="template-button button-save-changes"
+                <Button
+                  className="template-button-white button-save-changes"
+                  size={BUTTON_SIZE.MEDIUM}
+                  mode={BUTTON_MODE.OUTLINE}
                   disabled={isRequestInProgress}
                   onClick={() => updateTemplate()}
                 >
                   <IconSaveChanges />
                   Save changes
-                </button>
+                </Button>
               )}
               {isModifyingTemplate && (
-                <button
-                  className="template-button"
-                  data-testid="save-as-new-template"
+                <Button
+                  testId="save-as-new-template"
+                  className="template-button-white"
+                  size={BUTTON_SIZE.MEDIUM}
+                  mode={BUTTON_MODE.OUTLINE}
                   disabled={isRequestInProgress}
                   onClick={() => setTemplateModifier(TEMPLATE_MODIFIERS.CREATE)}
                 >
                   <IconSave />
                   Save as new
-                </button>
+                </Button>
               )}
               {!isStandardTemplateBool && <MoreMenu {...{portalTarget}} />}
             </>
