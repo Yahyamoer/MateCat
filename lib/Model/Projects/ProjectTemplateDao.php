@@ -48,6 +48,8 @@ class ProjectTemplateDao extends DataAccess_AbstractDao
         $default->pretranslate_100 = false;
         $default->pretranslate_101 = true;
         $default->get_public_matches = true;
+        $default->payable_rate_template_id = 0;
+        $default->qa_model_template_id = 0;
         $default->segmentation_rule = [
             "name" => "General",
             "id" => "standard"
@@ -176,7 +178,7 @@ class ProjectTemplateDao extends DataAccess_AbstractDao
 
 
         // check qa_id
-        if($projectTemplateStruct->qa_model_template_id !== null){
+        if($projectTemplateStruct->qa_model_template_id > 0){
             $qaModel = QAModelTemplateDao::get([
                 'id' => $projectTemplateStruct->qa_model_template_id
             ]);
@@ -191,7 +193,7 @@ class ProjectTemplateDao extends DataAccess_AbstractDao
         }
 
         // check pr_id
-        if($projectTemplateStruct->payable_rate_template_id !== null){
+        if($projectTemplateStruct->payable_rate_template_id > 0){
             $payableRateModel = CustomPayableRateDao::getById($projectTemplateStruct->payable_rate_template_id);
 
             if(empty($payableRateModel)){
