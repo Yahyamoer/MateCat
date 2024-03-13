@@ -33,6 +33,7 @@ import useProjectTemplates from '../hooks/useProjectTemplates'
 import {TemplateSelect} from '../components/settingsPanel/ProjectTemplate/TemplateSelect'
 import {checkLexiqaIsEnabled} from '../components/settingsPanel/Contents/AdvancedOptionsTab/Lexiqa'
 import {checkGuessTagIsEnabled} from '../components/settingsPanel/Contents/AdvancedOptionsTab/GuessTag'
+import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
 
 const SELECT_HEIGHT = 324
 
@@ -83,6 +84,9 @@ const NewProject = ({
   } = useProjectTemplates(Array.isArray(tmKeys))
 
   const isDeviceCompatible = useDeviceCompatibility()
+
+  // TODO: Remove temp notification warning login google (search in files this todo)
+  useGoogleLoginNotification()
 
   const projectNameRef = useRef()
   const prevSourceLang = useRef(sourceLang)
