@@ -48,13 +48,12 @@ const getFilteredSchemaCreateUpdate = (template) => {
   return filtered
 }
 
-export const AnalysisTabContext = createContext({})
-
 export const AnalysisTab = () => {
   const {
     currentProjectTemplate,
     modifyingCurrentTemplate: modifyingCurrentProjectTemplate,
     analysisTemplates,
+    portalTarget,
   } = useContext(SettingsPanelContext)
 
   const {templates, setTemplates, currentTemplate, modifyingCurrentTemplate} =
@@ -167,6 +166,7 @@ export const AnalysisTab = () => {
             setTemplates,
             currentTemplate,
             modifyingCurrentTemplate,
+            portalTarget,
             schema: ANALYSIS_SCHEMA_KEYS,
             getFilteredSchemaCreateUpdate,
             createApi: createBillingModelTemplate,
@@ -197,6 +197,7 @@ export const AnalysisTab = () => {
               <InputPercentage
                 value={mt}
                 setFn={setMt}
+                dataTestid={ANALYSIS_BREAKDOWNS.mt}
                 className={!isMtSaved ? 'analysis-value-not-saved' : ''}
               />
             </div>
