@@ -29,6 +29,7 @@ class createProjectController extends ajaxController {
     private $only_private;
     private $due_date;
     private $metadata;
+    private $dialect_strict;
 
     /**
      * @var \Teams\TeamStruct
@@ -69,10 +70,12 @@ class createProjectController extends ajaxController {
                 'mmt_glossaries'     => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
 
                 'deepl_id_glossary'  => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
-                'deepl_formality'     => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
+                'deepl_formality'    => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
 
                 'project_completion' => [ 'filter' => FILTER_VALIDATE_BOOLEAN ], // features customization
                 'get_public_matches' => [ 'filter' => FILTER_VALIDATE_BOOLEAN ], // disable public TM matches
+
+                'dialect_strict'    => [ 'filter' => FILTER_SANITIZE_STRING ],
 
         ];
 
@@ -169,6 +172,7 @@ class createProjectController extends ajaxController {
         $this->__validateUserMTEngine();
         $this->__validateMMTGlossaries();
         $this->__validateDeepLGlossaryParams();
+        $this->__validateDialectStrictParam();
         $this->__appendFeaturesToProject();
         $this->__generateTargetEngineAssociation();
         if ( $this->userIsLogged ) {
@@ -302,6 +306,7 @@ class createProjectController extends ajaxController {
         $projectStructure[ 'skip_lang_validation' ]         = true;
         $projectStructure[ 'pretranslate_100' ]             = $this->pretranslate_100;
         $projectStructure[ 'pretranslate_101' ]             = $this->pretranslate_101;
+        $projectStructure[ 'dialect_strict' ]               = $this->dialect_strict;
         $projectStructure[ 'only_private' ]                 = $this->only_private;
         $projectStructure[ 'due_date' ]                     = $this->due_date;
         $projectStructure[ 'target_language_mt_engine_id' ] = $this->postInput[ 'target_language_mt_engine_id' ];
@@ -606,7 +611,34 @@ class createProjectController extends ajaxController {
         }
     }
 
+    /**
+     * Validate `dialect_strict` param vs target languages
+     *
+     * Example: {"it-IT": true, "en-US": false, "fr-FR": false}
+     *
+     * @throws Exception
+     */
+    private function __validateDialectStrictParam()
+    {
+        if ( !empty( $this->postInput[ 'dialect_strict' ] ) ) {
 
+            $dialect_strict = trim(html_entity_decode($this->postInput[ 'dialect_strict' ]));
+            $targets = explode( ',', trim($this->postInput[ 'target_lang' ]) );
+            $dialectStrictObj = json_decode($dialect_strict, true);
+
+            foreach ($dialectStrictObj as $lang => $value){
+                if(!in_array($lang, $targets)){
+                    throw new \Exception('Wrong `dialect_strict` object, language, ' . $lang . ' is not one of the project target languages');
+                }
+
+                if(!is_bool($value)){
+                    throw new \Exception('Wrong `dialect_strict` object, not boolean declared value for ' . $lang);
+                }
+            }
+
+            $this->dialect_strict = html_entity_decode($dialect_strict);
+        }
+    }
 
     /**
      * This could be already set by MMT engine if enabled ( so check key existence and do not override )
