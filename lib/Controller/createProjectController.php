@@ -4,8 +4,11 @@ use ConnectedServices\GDrive as GDrive;
 use FilesStorage\AbstractFilesStorage;
 use FilesStorage\FilesStorageFactory;
 use Matecat\XliffParser\XliffUtils\XliffProprietaryDetect;
+use PayableRates\CustomPayableRateDao;
+use PayableRates\CustomPayableRateStruct;
 use ProjectQueue\Queue;
 use Matecat\XliffParser\Utils\Files as XliffFiles;
+use QAModelTemplate\QAModelTemplateStruct;
 use Validator\EngineValidator;
 use Validator\MMTValidator;
 
@@ -30,6 +33,16 @@ class createProjectController extends ajaxController {
     private $due_date;
     private $metadata;
     private $dialect_strict;
+
+    /**
+     * @var QAModelTemplateStruct
+     */
+    private $qaModelTemplate;
+
+    /**
+     * @var CustomPayableRateStruct
+     */
+    private $payableRateModelTemplate;
 
     /**
      * @var \Teams\TeamStruct
@@ -77,6 +90,8 @@ class createProjectController extends ajaxController {
 
                 'dialect_strict'    => [ 'filter' => FILTER_SANITIZE_STRING ],
 
+                'qa_model_template_id'       => [ 'filter' => FILTER_VALIDATE_INT ],
+                'payable_rate_template_id'   => [ 'filter' => FILTER_VALIDATE_INT ],
         ];
 
         $this->readLoginInfo( false );
@@ -162,7 +177,7 @@ class createProjectController extends ajaxController {
             $this->result[ 'errors' ][] = [ "code" => -6, "message" => "invalid pretranslate_100 value" ];
         }
 
-        if ( $this->pretranslate_101 !== 1 && $this->pretranslate_101 !== 0 ) {
+        if ( $this->pretranslate_101 !== null && $this->pretranslate_101 !== 1 && $this->pretranslate_101 !== 0 ) {
             $this->result[ 'errors' ][] = [ "code" => -6, "message" => "invalid pretranslate_101 value" ];
         }
 
@@ -173,6 +188,8 @@ class createProjectController extends ajaxController {
         $this->__validateMMTGlossaries();
         $this->__validateDeepLGlossaryParams();
         $this->__validateDialectStrictParam();
+        $this->__validateQaModelTemplate();
+        $this->__validatePayableRateTemplate();
         $this->__appendFeaturesToProject();
         $this->__generateTargetEngineAssociation();
         if ( $this->userIsLogged ) {
@@ -327,6 +344,15 @@ class createProjectController extends ajaxController {
 
         if($engine instanceof Engines_DeepL and $this->deepl_id_glossary !== null){
             $projectStructure['deepl_id_glossary'] = $this->deepl_id_glossary;
+        }
+
+        // with the qa template id
+        if( $this->qaModelTemplate ) {
+            $projectStructure[ 'qa_model_template' ] = $this->qaModelTemplate->getDecodedModel();
+        }
+
+        if( $this->payableRateModelTemplate ) {
+            $projectStructure[ 'payable_rate_model_id' ] = $this->payableRateModelTemplate->id;
         }
 
         //TODO enable from CONFIG
@@ -638,6 +664,52 @@ class createProjectController extends ajaxController {
 
             $this->dialect_strict = html_entity_decode($dialect_strict);
         }
+    }
+    
+    /**
+     * @throws Exception
+     */
+    private function __validateQaModelTemplate()
+    {
+        if ( !empty( $this->postInput[ 'qa_model_template_id' ] ) and $this->postInput[ 'qa_model_template_id' ] > 0 ) {
+            $qaModelTemplate = \QAModelTemplate\QAModelTemplateDao::get([
+                'id' => $this->postInput[ 'qa_model_template_id' ],
+                'uid' => $this->getUser()->uid
+            ]);
+
+            // check if qa_model template exists
+            if(null === $qaModelTemplate){
+                throw new \Exception('This QA Model template does not exists or does not belongs to the logged in user');
+            }
+
+            $this->qaModelTemplate = $qaModelTemplate;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function __validatePayableRateTemplate()
+    {
+        $payableRateModelTemplate = null;
+
+        if( !empty($this->postInput[ 'payable_rate_template_id' ] ) and $this->postInput[ 'payable_rate_template_id' ] > 0 ){
+
+            $payableRateTemplateId = $this->postInput[ 'payable_rate_template_id' ];
+            $userId = $this->getUser()->uid;
+
+            $payableRateModelTemplate = CustomPayableRateDao::getById($payableRateTemplateId);
+
+            if(null === $payableRateModelTemplate){
+                throw new \Exception('Payable rate model id not valid');
+            }
+
+            if($payableRateModelTemplate->uid !== $userId){
+                throw new \Exception('Payable rate model is not belonging to the current user');
+            }
+        }
+
+        $this->payableRateModelTemplate = $payableRateModelTemplate;
     }
 
     /**
