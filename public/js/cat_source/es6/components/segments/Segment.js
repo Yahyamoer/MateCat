@@ -46,8 +46,7 @@ class Segment extends React.Component {
 
     let readonly = UI.isReadonlySegment(this.props.segment)
     this.secondPassLocked =
-      this.props.segment.status.toUpperCase() ===
-        this.segmentStatus?.approved &&
+      this.props.segment.status.toUpperCase() === SEGMENTS_STATUS.APPROVED &&
       this.props.segment.revision_number === 2 &&
       config.revisionNumber !== 2
     this.state = {
@@ -249,6 +248,12 @@ class Segment extends React.Component {
     }
     if (this.props.segment.muted) {
       classes.push('muted')
+    }
+    if (
+      this.props.segment.status.toUpperCase() === SEGMENTS_STATUS.APPROVED &&
+      this.props.segment.revision_number
+    ) {
+      classes.push('approved-step-' + this.props.segment.revision_number)
     }
     if (this.props.segment.opened && this.checkIfCanOpenSegment()) {
       classes.push('editor')
