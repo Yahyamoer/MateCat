@@ -3,6 +3,8 @@
 namespace QAModelTemplate;
 
 use DataAccess_AbstractDao;
+use Date\DateTimeUtil;
+use DateTime;
 
 class QAModelTemplateDao extends DataAccess_AbstractDao
 {
@@ -73,8 +75,12 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
      */
     public static function remove($id)
     {
-        $conn = \Database::obtain()->getConnection();
+        $qaTemplateModel = self::get([
+            'id' => $id
+        ]);
+        $uid = $qaTemplateModel->uid;
 
+        $conn = \Database::obtain()->getConnection();
         $conn->beginTransaction();
 
         try {
@@ -121,6 +127,13 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
                     'id_template' => $id
             ]);
 
+            $stmt = $conn->prepare( "UPDATE project_templates SET qa_model_template_id = :zero WHERE uid = :uid and qa_model_template_id = :id " );
+            $stmt->execute( [
+                'zero' => 0,
+                'id'   => $id,
+                'uid'  => $uid,
+            ] );
+
             $conn->commit();
         } catch (\Exception $exception){
             $conn->rollBack();
@@ -132,6 +145,7 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
     /**
      * @param $uid
      * @return array
+     * @throws \Exception
      */
     private static function getDefaultTemplate($uid)
     {
@@ -184,6 +198,8 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
 
         unset($passfail['options']);
 
+        $now = (new DateTime())->format('Y-m-d H:i:s');
+
         return [
             'id' => 0,
             'uid' => (int)$uid,
@@ -191,6 +207,9 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
             'version' => 1,
             'categories' => $categories,
             'passfail' => $passfail,
+            'createdAt' => DateTimeUtil::formatIsoDate($now),
+            'modifiedAt' => DateTimeUtil::formatIsoDate($now),
+            'deletedAt' => null,
         ];
 
     }
@@ -206,7 +225,7 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
     {
         $conn = \Database::obtain()->getConnection();
 
-        $stmt = $conn->prepare( "SELECT count(id) as count FROM qa_model_templates WHERE uid = :uid");
+        $stmt = $conn->prepare( "SELECT count(id) as count FROM qa_model_templates WHERE deleted_at IS NULL AND uid = :uid");
         $stmt->execute([
             'uid' => $uid
         ]);
@@ -220,7 +239,7 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
         $models = [];
         $models[] = self::getDefaultTemplate($uid);
 
-        $stmt = $conn->prepare( "SELECT id FROM qa_model_templates WHERE uid = :uid LIMIT $pagination OFFSET $offset ");
+        $stmt = $conn->prepare( "SELECT id FROM qa_model_templates WHERE deleted_at IS NULL AND uid = :uid LIMIT $pagination OFFSET $offset ");
         $stmt->execute([
             'uid' => $uid
         ]);
@@ -262,7 +281,7 @@ class QAModelTemplateDao extends DataAccess_AbstractDao
     public static function get(array $meta = [])
     {
         $conn = \Database::obtain()->getConnection();
-        $query = "SELECT * FROM qa_model_templates WHERE 1=1 ";
+        $query = "SELECT * FROM qa_model_templates WHERE deleted_at IS NULL ";
         $params = [];
 
         if(isset($meta['id']) and '' !== $meta['id'] ){

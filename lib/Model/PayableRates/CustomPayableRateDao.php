@@ -5,6 +5,7 @@ namespace PayableRates;
 use Analysis_PayableRates;
 use DataAccess_AbstractDao;
 use Database;
+use Date\DateTimeUtil;
 use DateTime;
 use PDO;
 
@@ -13,8 +14,8 @@ class CustomPayableRateDao extends DataAccess_AbstractDao
     const TABLE = 'payable_rate_templates';
     const TABLE_JOB_PIVOT = 'job_custom_payable_rates';
 
-    const query_by_uid_name = "SELECT * FROM " . self::TABLE . " WHERE uid = :uid AND name = :name";
-    const query_by_id = "SELECT * FROM " . self::TABLE . " WHERE id = :id";
+    const query_by_uid_name = "SELECT * FROM " . self::TABLE . " WHERE deleted_at IS NULL AND uid = :uid AND name = :name";
+    const query_by_id = "SELECT * FROM " . self::TABLE . " WHERE deleted_at IS NULL AND id = :id";
 
     /**
      * @var null
@@ -35,6 +36,7 @@ class CustomPayableRateDao extends DataAccess_AbstractDao
     /**
      * @param $uid
      * @return array
+     * @throws \Exception
      */
     private static function getDefaultTemplate($uid)
     {
@@ -46,8 +48,9 @@ class CustomPayableRateDao extends DataAccess_AbstractDao
             'breakdowns' => [
                 'default' => Analysis_PayableRates::$DEFAULT_PAYABLE_RATES
             ],
-            'createdAt' => date("Y-m-d H:i:s"),
-            'modifiedAt' => date("Y-m-d H:i:s"),
+            'createdAt' => DateTimeUtil::formatIsoDate(date("Y-m-d H:i:s")),
+            'modifiedAt' => DateTimeUtil::formatIsoDate(date("Y-m-d H:i:s")),
+            'deletedAt' => null,
         ];
     }
 
@@ -55,14 +58,14 @@ class CustomPayableRateDao extends DataAccess_AbstractDao
      * @param $uid
      * @param int $current
      * @param int $pagination
-     *
      * @return array
+     * @throws \Exception
      */
     public static function getAllPaginated($uid, $current = 1, $pagination = 20)
     {
         $conn = \Database::obtain()->getConnection();
 
-        $stmt = $conn->prepare( "SELECT count(id) as count FROM ".self::TABLE." WHERE uid = :uid");
+        $stmt = $conn->prepare( "SELECT count(id) as count FROM ".self::TABLE." WHERE deleted_at IS NULL AND uid = :uid");
         $stmt->execute([
             'uid' => $uid
         ]);
@@ -76,7 +79,7 @@ class CustomPayableRateDao extends DataAccess_AbstractDao
         $models = [];
         $models[] = self::getDefaultTemplate($uid);
 
-        $stmt = $conn->prepare( "SELECT id FROM ".self::TABLE." WHERE uid = :uid LIMIT $pagination OFFSET $offset ");
+        $stmt = $conn->prepare( "SELECT id FROM ".self::TABLE." WHERE deleted_at IS NULL AND uid = :uid LIMIT $pagination OFFSET $offset ");
         $stmt->execute([
             'uid' => $uid
         ]);
@@ -187,15 +190,32 @@ class CustomPayableRateDao extends DataAccess_AbstractDao
     /**
      * @param $id
      * @return int
+     * @throws \Exception
      */
     public static function remove( $id ) {
+
+        $payableRateModel = self::getById($id);
+        $uid = $payableRateModel->uid;
+
         $conn = Database::obtain()->getConnection();
-        $stmt = $conn->prepare( "DELETE FROM ".self::TABLE." WHERE id = :id " );
-        $stmt->execute( [ 'id' => $id ] );
+        $stmt = $conn->prepare( "UPDATE ".self::TABLE." SET `deleted_at` = :now WHERE id = :id " );
+        $stmt->execute( [
+            'id'  => $id,
+            'now' => (new DateTime())->format('Y-m-d H:i:s'),
+        ] );
 
         self::destroyQueryByIdCache($conn, $id);
 
-        return $stmt->rowCount();
+        $queryAffected = $stmt->rowCount();
+
+        $stmt = $conn->prepare( "UPDATE project_templates SET payable_rate_template_id = :zero WHERE uid = :uid AND payable_rate_template_id = :id " );
+        $stmt->execute( [
+            'zero' => 0,
+            'id'   => $id,
+            'uid'  => $uid,
+        ] );
+
+        return $queryAffected;
     }
 
     /**

@@ -20,6 +20,7 @@ class CustomPayableRateStruct extends DataAccess_AbstractDaoSilentStruct impleme
     public $breakdowns;
     public $created_at;
     public $modified_at;
+    public $deleted_at;
 
     /**
      * @return string
@@ -156,6 +157,7 @@ class CustomPayableRateStruct extends DataAccess_AbstractDaoSilentStruct impleme
             'breakdowns' => $this->getBreakdownsArray(),
             'createdAt' => DateTimeUtil::formatIsoDate($this->created_at),
             'modifiedAt' => DateTimeUtil::formatIsoDate($this->modified_at),
+            'deletedAt' => DateTimeUtil::formatIsoDate($this->deleted_at),
         ];
     }
 }
