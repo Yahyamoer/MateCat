@@ -56,17 +56,17 @@ export const MTGlossaryRow = ({
       })
       setIsWaitingResult(false)
     }
-    const dispatchErrorImportNotification = () => {
-      CatToolActions.addNotification({
-        title: 'Glossary import error',
-        type: 'error',
-        text: `Glossary file ${file.name} import error`,
-        position: 'br',
-        allowHtml: true,
-        timer: 5000,
-      })
-      setIsWaitingResult(false)
-    }
+    const dispatchErrorImportNotification = (error) => {
+          CatToolActions.addNotification({
+              title: 'Glossary import error',
+              type: 'error',
+              text: error ?? `Glossary file ${file.name} import error`,
+              position: 'br',
+              allowHtml: true,
+              timer: 5000,
+          })
+          setIsWaitingResult(false)
+      }
 
     statusImport.current = new MTGlossaryStatus()
 
@@ -85,7 +85,7 @@ export const MTGlossaryRow = ({
             .catch(() => dispatchErrorImportNotification())
         }
       })
-      .catch(() => dispatchErrorImportNotification())
+      .catch(({errors}) => dispatchErrorImportNotification(errors))
 
     return () => statusImport.current.cancel()
   }, [file, row.id, engineId])
