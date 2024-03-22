@@ -39,7 +39,6 @@ import {checkLexiqaIsEnabled} from '../components/settingsPanel/Contents/Advance
 import {checkGuessTagIsEnabled} from '../components/settingsPanel/Contents/AdvancedOptionsTab/GuessTag'
 import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
 import {getMMTKeys} from '../api/getMMTKeys/getMMTKeys'
-import {updateProjectTemplate} from '../api/updateProjectTemplate'
 
 const SELECT_HEIGHT = 324
 

@@ -18,7 +18,6 @@ import {getTmKeysUser} from '../api/getTmKeysUser'
 import {getMTEngines as getMtEnginesApi} from '../api/getMTEngines'
 import {
   DEFAULT_ENGINE_MEMORY,
-  MMT_NAME,
   SETTINGS_PANEL_TABS,
   SettingsPanel,
 } from '../components/settingsPanel'
@@ -97,11 +96,28 @@ function CatTool() {
   }
 
   const getMTEngines = () => {
-    if (config.isLoggedIn) {
+    const setMTCurrentFakeTemplate = () => {
+      if (config.active_engine && config.active_engine.id) {
+        const activeMT = config.active_engine
+        if (activeMT) {
+          modifyingCurrentTemplate((prevTemplate) => ({
+            ...prevTemplate,
+            mt: {
+              ...prevTemplate.mt,
+              id: activeMT.id,
+            },
+          }))
+        }
+      }
+    }
+
+    if (config.isLoggedIn && config.ownerIsMe) {
       getMtEnginesApi().then((mtEngines) => {
-        mtEngines.push(DEFAULT_ENGINE_MEMORY)
-        setMtEngines(mtEngines)
+        setMtEngines([DEFAULT_ENGINE_MEMORY, ...mtEngines])
+        setMTCurrentFakeTemplate()
       })
+    } else {
+      setMTCurrentFakeTemplate()
     }
   }
 
