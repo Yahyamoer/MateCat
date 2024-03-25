@@ -78,13 +78,10 @@ class createProjectController extends ajaxController {
                 'id_team'           => [ 'filter' => FILTER_VALIDATE_INT, 'flags' => FILTER_REQUIRE_SCALAR ],
 
                 'mmt_glossaries' => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
-
-                'deepl_id_glossary' => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
-                'deepl_formality'   => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
-
+                'deepl_id_glossary'  => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
+                'deepl_formality'    => [ 'filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_LOW ],
                 'project_completion' => [ 'filter' => FILTER_VALIDATE_BOOLEAN ], // features customization
                 'get_public_matches' => [ 'filter' => FILTER_VALIDATE_BOOLEAN ], // disable public TM matches
-
                 'dialect_strict'    => [ 'filter' => FILTER_SANITIZE_STRING ],
 
                 'qa_model_template_id'       => [ 'filter' => FILTER_VALIDATE_INT ],
