@@ -33,6 +33,7 @@ class createProjectController extends ajaxController {
     private $due_date;
     private $metadata;
     private $dialect_strict;
+    private $dialect_strict;
 
     /**
      * @var QAModelTemplateStruct
@@ -84,7 +85,6 @@ class createProjectController extends ajaxController {
 
                 'project_completion' => [ 'filter' => FILTER_VALIDATE_BOOLEAN ], // features customization
                 'get_public_matches' => [ 'filter' => FILTER_VALIDATE_BOOLEAN ], // disable public TM matches
-
                 'dialect_strict'    => [ 'filter' => FILTER_SANITIZE_STRING ],
 
                 'qa_model_template_id'       => [ 'filter' => FILTER_VALIDATE_INT ],
