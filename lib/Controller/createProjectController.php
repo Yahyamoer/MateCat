@@ -33,7 +33,6 @@ class createProjectController extends ajaxController {
     private $due_date;
     private $metadata;
     private $dialect_strict;
-    private $dialect_strict;
 
     /**
      * @var QAModelTemplateStruct

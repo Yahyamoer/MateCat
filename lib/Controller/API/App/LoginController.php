@@ -13,7 +13,6 @@ use CookieManager;
 use INIT;
 use Klein\Response;
 use SimpleJWT;
-use Klein\Response;
 use Users\RedeemableProject;
 use Users_UserDao;
 use Utils;
