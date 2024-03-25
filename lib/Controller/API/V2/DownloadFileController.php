@@ -85,6 +85,22 @@ class DownloadFileController extends AbstractDownloadController {
     }
 
     /**
+     * @throws ReflectionException
+     * @throws \API\V2\Exceptions\AuthenticationError
+     * @throws \Exceptions\NotFoundException
+     * @throws \Exceptions\ValidationError
+     * @throws \Matecat\XliffParser\Exception\NotSupportedVersionException
+     * @throws \Matecat\XliffParser\Exception\NotValidFileException
+     * @throws \Predis\Connection\ConnectionException
+     * @throws \TaskRunner\Exceptions\EndQueueException
+     * @throws \TaskRunner\Exceptions\ReQueueException
+     */
+    public function forceXliff()
+    {
+        $this->downloadFile(true);
+    }
+
+    /**
      * @param bool $forceXliff
      *
      * @throws ReflectionException
@@ -452,6 +468,7 @@ class DownloadFileController extends AbstractDownloadController {
                         $oContent = array_pop( $output_content );
 
                         $filename = $this->generateFilename( $oContent->output_filename );
+                        $pathinfo = pathinfo($filename);
 
                         if ( $pathinfo[ 'extension' ] == 'zip' ) {
                             $this->setFilename( $filename );
