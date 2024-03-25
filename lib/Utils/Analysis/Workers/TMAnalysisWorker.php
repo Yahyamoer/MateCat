@@ -518,23 +518,6 @@ class TMAnalysisWorker extends AbstractWorker {
             return $tm_match_fuzzy_band;
         }
 
-        // if there is a repetition from Fast, keep it in REPETITIONS bucket
-        if ( $fast_match_type == 'REPETITIONS' ) {
-            return $fast_match_type;
-        }
-
-        // if Fast match type > TM match type, return it
-        // otherwise return the TM match type
-        if( $fast_match_type === 'INTERNAL' ){
-            $ind_fast = intval( $fast_exact_match_type );
-
-            if($ind_fast > $ind){
-                return $fast_match_type;
-            }
-
-            return $tm_match_fuzzy_band;
-        }
-
         /**
          * Apply the TM discount rate and/or force the value obtained from TM for
          * matches between 50%-74% because is never returned in Fast Analysis; it's rate is set default as equals to NO_MATCH
