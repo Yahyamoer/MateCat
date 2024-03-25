@@ -11,6 +11,7 @@ namespace API\App;
 use AuthCookie;
 use CookieManager;
 use INIT;
+use Klein\Response;
 use SimpleJWT;
 use Klein\Response;
 use Users\RedeemableProject;
