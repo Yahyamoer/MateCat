@@ -416,8 +416,10 @@ class setTranslationController extends ajaxController {
          * must be removed
          */
         if ( $new_translation->translation != $old_translation->translation ||
-            $this->status == Constants_TranslationStatus::STATUS_TRANSLATED ||
-            $this->status == Constants_TranslationStatus::STATUS_APPROVED ) {
+                $this->status == Constants_TranslationStatus::STATUS_TRANSLATED ||
+                $this->status == Constants_TranslationStatus::STATUS_APPROVED ||
+                $this->status == Constants_TranslationStatus::STATUS_APPROVED2
+        ) {
             $new_translation->autopropagated_from = 'NULL';
         }
 
