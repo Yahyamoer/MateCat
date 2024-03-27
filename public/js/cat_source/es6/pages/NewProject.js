@@ -36,7 +36,6 @@ import {getSupportedLanguages} from '../api/getSupportedLanguages'
 import ApplicationActions from '../actions/ApplicationActions'
 import useDeviceCompatibility from '../hooks/useDeviceCompatibility'
 import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
-import {useMaintenanceNotification} from '../hooks/useMaintenanceNotification'
 
 const SELECT_HEIGHT = 324
 
@@ -101,8 +100,6 @@ const NewProject = ({
 
   const isDeviceCompatible = useDeviceCompatibility()
 
-  // TODO: Temp notification maintenance 27 Mar 24
-  useMaintenanceNotification()
   // TODO: Remove temp notification warning login google (search in files this todo)
   useGoogleLoginNotification()
 
