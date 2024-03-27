@@ -36,6 +36,7 @@ import {getSupportedLanguages} from '../api/getSupportedLanguages'
 import ApplicationActions from '../actions/ApplicationActions'
 import useDeviceCompatibility from '../hooks/useDeviceCompatibility'
 import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
+import {useMaintenanceNotification} from '../hooks/useMaintenanceNotification'
 
 const SELECT_HEIGHT = 324
 
@@ -100,6 +101,8 @@ const NewProject = ({
 
   const isDeviceCompatible = useDeviceCompatibility()
 
+  // TODO: Temp notification maintenance 27 Mar 24
+  useMaintenanceNotification()
   // TODO: Remove temp notification warning login google (search in files this todo)
   useGoogleLoginNotification()
 
@@ -592,18 +595,22 @@ const NewProject = ({
         {warnings && (
           <div className="warning-message">
             <i className="icon-warning2 icon"> </i>
-            <p dangerouslySetInnerHTML={{
-              __html: warnings
-            }} />
+            <p
+              dangerouslySetInnerHTML={{
+                __html: warnings,
+              }}
+            />
           </div>
         )}
 
         {errors && (
           <div className="error-message">
             <i className="icon-error_outline icon"> </i>
-            <p dangerouslySetInnerHTML={{
-              __html: errors
-            }} />
+            <p
+              dangerouslySetInnerHTML={{
+                __html: errors,
+              }}
+            />
           </div>
         )}
 

@@ -28,6 +28,7 @@ import {getTmKeysJob} from '../api/getTmKeysJob'
 import {getSupportedLanguages} from '../api/getSupportedLanguages'
 import ApplicationStore from '../stores/ApplicationStore'
 import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
+import {useMaintenanceNotification} from '../hooks/useMaintenanceNotification'
 
 const urlParams = new URLSearchParams(window.location.search)
 const initialStateIsOpenSettings = Boolean(urlParams.get('openTab'))
@@ -57,6 +58,8 @@ function CatTool() {
   )
   const [supportedLanguages, setSupportedLanguages] = useState([])
 
+  // TODO: Temp notification maintenance 27 Mar 24
+  useMaintenanceNotification()
   // TODO: Remove temp notification warning login google (search in files this todo)
   useGoogleLoginNotification()
 

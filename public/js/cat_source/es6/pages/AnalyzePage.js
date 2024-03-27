@@ -10,6 +10,7 @@ import {getVolumeAnalysis} from '../api/getVolumeAnalysis'
 import Immutable from 'immutable'
 import {createRoot} from 'react-dom/client'
 import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
+import {useMaintenanceNotification} from '../hooks/useMaintenanceNotification'
 
 let pollingTime = 1000
 const segmentsThreshold = 50000
@@ -19,6 +20,8 @@ const AnalyzePage = () => {
   const [volumeAnalysis, setVolumeAnalysis] = useState()
   const containerRef = useRef()
 
+  // TODO: Temp notification maintenance 27 Mar 24
+  useMaintenanceNotification()
   // TODO: Remove temp notification warning login google (search in files this todo)
   useGoogleLoginNotification()
 
