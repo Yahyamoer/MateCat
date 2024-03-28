@@ -484,7 +484,7 @@ class setTranslationController extends ajaxController {
                 Log::doJsonLog( $msg );
                 Utils::sendErrMailReport( $msg );
                 $db->rollback();
-                throw new ControllerReturnException( $e->getMessage(), $e );
+                throw new ControllerReturnException( $e->getMessage(), $e->getCode(), $e );
             }
         }
 
