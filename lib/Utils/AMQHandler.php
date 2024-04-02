@@ -144,27 +144,7 @@ class AMQHandler extends StatefulStomp {
 
         $queue_interface_url = INIT::$QUEUE_JMX_ADDRESS . "/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=" . INIT::$INSTANCE_ID . "_" . $queue . "/QueueSize";
 
-        $mHandler = new MultiCurlHandler();
-
-        $options = [
-                CURLOPT_HEADER         => false,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_USERAGENT      => INIT::MATECAT_USER_AGENT . INIT::$BUILD_NUMBER,
-                CURLOPT_CONNECTTIMEOUT => 5, // a timeout to call itself should not be too much higher :D
-                CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_SSL_VERIFYHOST => 2,
-                CURLOPT_HTTPHEADER     => [ 'Authorization: Basic ' . base64_encode( INIT::$QUEUE_CREDENTIALS ) ]
-        ];
-
-        $resource = $mHandler->createResource( $queue_interface_url, $options );
-        $mHandler->multiExec();
-        $result = $mHandler->getSingleContent( $resource );
-        $mHandler->multiCurlCloseAll();
-        $result = json_decode( $result, true );
-
-        Utils::raiseJsonExceptionError();
-
-        return $result[ 'value' ];
+        return $this->callAmqJmx( $queue_interface_url );
 
     }
 
@@ -188,27 +168,7 @@ class AMQHandler extends StatefulStomp {
 
         $queue_interface_url = INIT::$QUEUE_JMX_ADDRESS . "/api/jolokia/read/org.apache.activemq:type=Broker,brokerName=localhost,destinationType=Queue,destinationName=" . INIT::$INSTANCE_ID . "_" . $queue . "/ConsumerCount";
 
-        $mHandler = new MultiCurlHandler();
-
-        $options = [
-                CURLOPT_HEADER         => false,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_USERAGENT      => INIT::MATECAT_USER_AGENT . INIT::$BUILD_NUMBER,
-                CURLOPT_CONNECTTIMEOUT => 5, // a timeout to call itself should not be too much higher :D
-                CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_SSL_VERIFYHOST => 2,
-                CURLOPT_HTTPHEADER     => [ 'Authorization: Basic ' . base64_encode( INIT::$QUEUE_CREDENTIALS ) ]
-        ];
-
-        $resource = $mHandler->createResource( $queue_interface_url, $options );
-        $mHandler->multiExec();
-        $result = $mHandler->getSingleContent( $resource );
-        $mHandler->multiCurlCloseAll();
-        $result = json_decode( $result, true );
-
-        Utils::raiseJsonExceptionError();
-
-        return $result[ 'value' ];
+        return $this->callAmqJmx( $queue_interface_url );
 
     }
 
@@ -257,6 +217,36 @@ class AMQHandler extends StatefulStomp {
             $this->publishToQueues( $queueInfo->queue_name, new Message( strval( $failed_segment ), [ 'persistent' => $this->persistent ] ) );
         }
 
+    }
+
+    /**
+     * @param $queue_interface_url
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function callAmqJmx( $queue_interface_url ) {
+        $mHandler = new MultiCurlHandler();
+
+        $options = [
+                CURLOPT_HEADER         => false,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_USERAGENT      => INIT::MATECAT_USER_AGENT . INIT::$BUILD_NUMBER,
+                CURLOPT_CONNECTTIMEOUT => 5, // a timeout to call itself should not be too much higher :D
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_HTTPHEADER     => [ 'Authorization: Basic ' . base64_encode( INIT::$QUEUE_CREDENTIALS ) ]
+        ];
+
+        $resource = $mHandler->createResource( $queue_interface_url, $options );
+        $mHandler->multiExec();
+        $result = $mHandler->getSingleContent( $resource );
+        $mHandler->multiCurlCloseAll();
+        $result = json_decode( $result, true );
+
+        Utils::raiseJsonExceptionError();
+
+        return $result[ 'value' ];
     }
 
 }
