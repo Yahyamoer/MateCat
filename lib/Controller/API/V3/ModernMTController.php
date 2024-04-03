@@ -106,7 +106,6 @@ class ModernMTController extends BaseChunkController {
             }
 
             $this->validateCSVContent($csv);
-
             $engineId  = filter_var( $this->request->engineId, FILTER_SANITIZE_NUMBER_INT );
             $MMTClient = $this->getModernMTClient( $engineId );
 
@@ -115,6 +114,7 @@ class ModernMTController extends BaseChunkController {
                 'csv' => new CURLFile($glossary, 'text/csv'),
                 'type' => $this->getCsvType($csv)
             ]));
+
             exit();
 
         } catch ( Exception $exception ) {
@@ -237,6 +237,7 @@ class ModernMTController extends BaseChunkController {
                 'csv' => new CURLFile($glossary, 'text/csv'),
                 'type' => $this->getCsvType($csv)
             ]));
+
             exit();
 
         } catch ( Exception $exception ) {
