@@ -98,7 +98,9 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 67
+                'MT'          => 67,
+                'ICE'         => 0,
+                'ICE_MT'      => 30,
             ],
             "is" => [
                 'NO_MATCH'    => 100,
@@ -367,9 +369,7 @@ class Analysis_PayableRates {
                 '100%_PUBLIC' => 30,
                 'REPETITIONS' => 30,
                 'INTERNAL'    => 60,
-                'MT'          => 77,
-                'ICE'         => 0,
-                'ICE_MT'      => 30,
+                'MT'          => 77
             ],
             "xh" => [
                 'NO_MATCH'    => 100,
