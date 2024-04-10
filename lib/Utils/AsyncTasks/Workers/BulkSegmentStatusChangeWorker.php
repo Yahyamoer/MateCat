@@ -11,6 +11,7 @@ namespace AsyncTasks\Workers;
 
 use Chunks_ChunkStruct;
 use Database;
+use Exception;
 use Features;
 use Features\ReviewExtended\ReviewUtils;
 use Features\TranslationVersions\Handlers\TranslationEventsHandler;
