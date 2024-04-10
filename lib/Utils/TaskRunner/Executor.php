@@ -124,7 +124,7 @@ class Executor implements SplObserver {
 
         try {
 
-            $this->_queueHandler = new AMQHandler();
+            $this->_queueHandler = AMQHandler::getNewInstanceForDaemons();
 
             if ( !$this->_queueHandler->getRedisClient()->sadd( $this->_executionContext->pid_set_name, $this->_executor_instance_id ) ) {
                 throw new Exception( "(Executor " . $this->_executor_instance_id . ") : FATAL !! cannot create my resource ID. Exiting!" );
@@ -267,7 +267,7 @@ class Executor implements SplObserver {
 
                 //set/increment the reQueue number
                 $queueElement->reQueueNum = ++$queueElement->reQueueNum;
-                $amqHandlerPublisher      = new AMQHandler();
+                $amqHandlerPublisher      = AMQHandler::getNewInstanceForDaemons();
                 $amqHandlerPublisher->reQueue( $queueElement, $this->_executionContext );
                 $amqHandlerPublisher->getClient()->disconnect();
 
@@ -281,7 +281,7 @@ class Executor implements SplObserver {
                 $this->_logMsg( "************* (Executor " . $this->_executor_instance_id . ") " . $e->getTraceAsString() );
 
                 $queueElement->reQueueNum = ++$queueElement->reQueueNum;
-                $amqHandlerPublisher      = new AMQHandler();
+                $amqHandlerPublisher      = AMQHandler::getNewInstanceForDaemons();
                 $amqHandlerPublisher->reQueue( $queueElement, $this->_executionContext );
                 $amqHandlerPublisher->getClient()->disconnect();
                 sleep( 2 );
