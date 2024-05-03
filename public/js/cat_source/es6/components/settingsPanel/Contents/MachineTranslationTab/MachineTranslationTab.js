@@ -16,7 +16,6 @@ import {deleteMTEngine} from '../../../../api/deleteMTEngine'
 import {DEFAULT_ENGINE_MEMORY} from '../../SettingsPanel'
 import {MTGlossary} from './MTGlossary'
 
-import Close from '../../../../../../../img/icons/Close'
 import AddWide from '../../../../../../../img/icons/AddWide'
 import {DeepL} from './MtEngines/DeepL'
 import {DeepLGlossary} from './DeepLGlossary'
@@ -27,6 +26,8 @@ import {DeleteResource} from './DeleteResource'
 import ModalsActions from '../../../../actions/ModalsActions'
 import {ConfirmDeleteResourceProjectTemplates} from '../../../modals/ConfirmDeleteResourceProjectTemplates'
 import {SCHEMA_KEYS} from '../../../../hooks/useProjectTemplates'
+import IconClose from '../../../icons/IconClose'
+import {BUTTON_TYPE, Button} from '../../../common/Button/Button'
 
 export const MachineTranslationTab = () => {
   const {
@@ -59,7 +60,11 @@ export const MachineTranslationTab = () => {
   const [deleteMTRequest, setDeleteMTRequest] = useState()
 
   const enginesList = [
-    {name: 'ModernMT', id: 'mmt', component: ModernMt},
+    {
+      name: mtEngines.find(({class_load}) => class_load === 'MMT').name,
+      id: 'mmt',
+      component: ModernMt,
+    },
     {name: 'AltLang', id: 'altlang', component: AltLang},
     {name: 'Apertium', id: 'apertium', component: Apertium},
     {name: 'DeepL', id: 'deepl', component: DeepL},
@@ -244,15 +249,16 @@ export const MachineTranslationTab = () => {
     ? CUSTOM_ACTIVE_COLUMNS_TABLE_BY_ENGINE[activeMTEngineData.name]
     : COLUMNS_TABLE
 
-  const ActiveMTRow = activeMTEngineData?.name === 'DeepL' ? MTDeepLRow : MTRow
+  const ActiveMTRow =
+    activeMTEngineData?.class_load === 'DeepL' ? MTDeepLRow : MTRow
 
   const getExtraNodeActiveRow = () => {
     const shouldShowDeleteConfirmation =
       deleteMTRequest && activeMTEngineData.id === deleteMTRequest
     const GlossaryComponent =
-      activeMTEngineData.name === 'ModernMT'
+      activeMTEngineData.class_load === 'MMT'
         ? MTGlossary
-        : activeMTEngineData.name === 'DeepL'
+        : activeMTEngineData.class_load === 'DeepL'
           ? DeepLGlossary
           : undefined
 
@@ -299,12 +305,12 @@ export const MachineTranslationTab = () => {
                 setError()
               }}
             />
-            <button
-              className="ui button orange"
+            <Button
+              type={BUTTON_TYPE.WARNING}
               onClick={() => setAddMTVisible(false)}
             >
-              <Close />
-            </button>
+              <IconClose size={11} />
+            </Button>
           </div>
           {activeAddEngine ? (
             <activeAddEngine.component
