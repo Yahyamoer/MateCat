@@ -163,7 +163,7 @@ class AMQHandler {
      */
     private function _send( $destination, Message $message ) {
         $r = $this->statefulStomp->send( $destination, $message );
-        $this->statefulStomp->getClient()->disconnect( true );
+        $this->statefulStomp->getClient()->disconnect();
 
         return $r;
     }
