@@ -82,8 +82,11 @@ class AnalyzeChunksResume extends React.Component {
   }
 
   openOutsourceModal = (idJob, chunk) => (e) => {
+    const {status} = this.props
     e.stopPropagation()
     e.preventDefault()
+    if (status !== ANALYSIS_STATUS.DONE) return
+
     const data = {
       event: 'outsource_request',
     }
@@ -164,6 +167,7 @@ class AnalyzeChunksResume extends React.Component {
       <OutsourceButton
         chunk={chunk}
         index={index}
+        status={this.props.status}
         openOutsourceModal={this.openOutsourceModal}
       />
     )
@@ -574,7 +578,7 @@ class AnalyzeChunksResume extends React.Component {
   }
 }
 
-const OutsourceButton = ({chunk, index, openOutsourceModal}) => {
+const OutsourceButton = ({chunk, index, openOutsourceModal, status}) => {
   const outsourceButton = useRef()
   return !chunk.outsource_available &&
     chunk.outsource_info?.custom_payable_rate ? (
@@ -603,7 +607,9 @@ const OutsourceButton = ({chunk, index, openOutsourceModal}) => {
     </div>
   ) : (
     <div
-      className={'outsource-translation'}
+      className={`outsource-translation  ${
+        status !== ANALYSIS_STATUS.DONE ? 'outsource-translation-disabled' : ''
+      }`}
       onClick={openOutsourceModal(index, chunk)}
       id="open-quote-request"
     >
