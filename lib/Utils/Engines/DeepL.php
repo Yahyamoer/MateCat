@@ -24,60 +24,29 @@ class Engines_DeepL extends Engines_AbstractEngine
         return DeepLApiClient::newInstance($this->apiKey);
     }
 
-    protected function _decode($rawValue)
-    {
-        throw new DomainException("Method " . __FUNCTION__ . " not implemented.");
-    }
-
     /**
-     * @inheritDoc
-     */
-    public function get($_config)
-    {
-        try {
-            $source = explode("-", $_config['source']);
-            $target = explode("-", $_config['target']);
-
-            $client = $this->_getClient();
-            $result = $client->translate(
-                $_config['segment'],
-                $source[0],
-                $target[0],
-                $_config['formality'] ? $_config['formality'] : null,
-                $_config['idGlossary'] ? $_config['idGlossary'] : null
-            );
-
-            return $this->formatMatches($_config, $result);
-
-        } catch (Exception $e) {
-            return $this->GoogleTranslateFallback($_config);
-        }
-    }
-
-    /**
-     * @param $_config
-     * @param $result
+     * @param $rawValue
+     * @param array $parameters
+     * @param null $function
      * @return array
      */
-    private function formatMatches($_config, $result)
+    protected function _decode($rawValue, array $parameters = [], $function = null)
     {
-        $matches = [];
-
-        if (!isset($result['translations'])) {
-            return $matches;
-        }
-
-        $translation = $result['translations'][0]['text'];
+        $rawValue = json_decode($rawValue, true);
+        $translation = $rawValue['translations'][0]['text'];
+        $source = $parameters['source_lang'];
+        $target = $parameters['target_lang'];
+        $segment = $parameters['text'][0];
 
         return [
             'id' => 0,
             'create_date' => '0000-00-00',
-            'segment' => $_config['segment'],
-            'raw_segment' => $_config['segment'],
+            'segment' => $segment,
+            'raw_segment' => $segment,
             'translation' => $translation,
+            'raw_translation' => $translation,
             'source_note' => '',
             'target_note' => '',
-            'raw_translation' => $translation,
             'quality' => 85,
             'reference' => '',
             'usage_count' => 0,
@@ -89,9 +58,54 @@ class Engines_DeepL extends Engines_AbstractEngine
             'memory_key' => '',
             'ICE' => false,
             'tm_properties' => [],
-            'target' => $_config['target'],
-            'source' => $_config['source'],
+            'target' => $target,
+            'source' => $source,
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get($_config)
+    {
+        try {
+            $source = explode("-", $_config['source']);
+            $target = explode("-", $_config['target']);
+
+            $parameters = [
+                'text' => [
+                    $_config['segment'],
+                ],
+                'source_lang' => $source[0],
+                'target_lang' => $target[0],
+                'formality' => ($_config['formality'] ? $_config['formality'] : null),
+                'glossary_id' => ($_config['idGlossary'] ? $_config['idGlossary'] : null)
+            ];
+
+            $headers = [
+                'Authorization: DeepL-Auth-Key ' . $this->apiKey,
+                'Content-Type: application/json'
+            ];
+
+            $this->_setAdditionalCurlParams(
+                [
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => json_encode($parameters),
+                    CURLOPT_HTTPHEADER => $headers,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HEADER         => false,
+                    CURLOPT_SSL_VERIFYPEER => true,
+                    CURLOPT_SSL_VERIFYHOST => 2
+                ]
+            );
+
+            $this->call("translate_relative_url", $parameters, true);
+
+            return $this->result;
+
+        } catch (Exception $e) {
+            return $this->GoogleTranslateFallback($_config);
+        }
     }
 
     /**
