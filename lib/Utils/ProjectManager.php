@@ -7,7 +7,6 @@
  *
  */
 
-use ActivityLog\Activity;
 use ActivityLog\ActivityLogStruct;
 use API\V2\Exceptions\AuthenticationError;
 use ConnectedServices\GDrive as GDrive;
@@ -1093,7 +1092,24 @@ class ProjectManager {
         $activity->ip         = $this->projectStructure[ 'user_ip' ];
         $activity->uid        = $this->projectStructure[ 'uid' ];
         $activity->event_date = date( 'Y-m-d H:i:s' );
-        Activity::save( $activity );
+
+        try {
+            WorkerClient::enqueueWithClient(
+                    AMQHandler::getNewInstanceForDaemons(),
+                    'ACTIVITYLOG',
+                    '\AsyncTasks\Workers\ActivityLogWorker',
+                    $activity,
+                    [ 'persistent' => WorkerClient::$_HANDLER->persistent ]
+            );
+        } catch ( Exception $e ) {
+
+            # Handle the error, logging, ...
+            $output = "**** Activity Log failed. AMQ Connection Error. **** ";
+            $output .= "{$e->getMessage()}";
+            $output .= var_export( $activity, true );
+            $this->_log( $output );
+
+        }
 
     }
 
