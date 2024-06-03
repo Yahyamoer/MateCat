@@ -299,8 +299,6 @@ const matecatConfig = async ({env}, {mode}) => {
               './public/js/lib/jquery-3.3.1.min.js',
               './public/js/lib/jquery-ui.min.js',
               './public/js/lib/jquery-dateFormat.min.js',
-              './public/js/lib/jquery.atwho.min.js',
-              './public/js/lib/jquery.caret.min.js',
               './public/js/lib/semantic.min.js',
             ],
             dest: './public/build/libs.js',
