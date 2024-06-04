@@ -58,10 +58,16 @@ export const SegmentButton = ({segment, disabled, isReview}) => {
   }
 
   const clickOnTranslatedButton = (event, gotoUntranslated) => {
-    trackTranslatedClick()
-    setTimeout(() =>
-      SegmentActions.clickOnTranslatedButton(segment, gotoUntranslated),
-    )
+    const currentSegmentTPEnabled =
+      SegmentUtils.checkCurrentSegmentTPEnabled(segment)
+    if (currentSegmentTPEnabled) {
+      clickOnGuessTags(event)
+    } else {
+      trackTranslatedClick()
+      setTimeout(() =>
+        SegmentActions.clickOnTranslatedButton(segment, gotoUntranslated),
+      )
+    }
   }
 
   const clickOnApprovedButton = (event, gotoNexUnapproved) => {
