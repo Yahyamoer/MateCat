@@ -50,8 +50,8 @@ class getSearchController extends ajaxController {
     /**
      * getSearchController constructor.
      * @throws ReflectionException
-     * @throws NotFoundException
-     * @throws ConnectionException
+     * @throws \Predis\Connection\ConnectionException
+     * @throws Exception
      */
     public function __construct() {
 
