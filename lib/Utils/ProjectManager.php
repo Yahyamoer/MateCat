@@ -194,7 +194,6 @@ class ProjectManager {
                     'deepl_id_glossary'             => null,
                     'filters_extraction_parameters' => null,
                 ] );
-
         }
 
         $this->projectStructure = $projectStructure;
