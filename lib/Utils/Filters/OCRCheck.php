@@ -4,6 +4,7 @@ namespace Filters;
 use finfo;
 use INIT;
 use Langs_Languages;
+use MimeTypes\MimeTypes;
 
 /**
  * Created by PhpStorm.
@@ -12,7 +13,6 @@ use Langs_Languages;
  * Time: 12:08
  */
 
-//TODO remove when Filters will return a warning for the ocr with a wrong language type
 /**
  * Class OCRCheck
  *
@@ -28,12 +28,12 @@ class OCRCheck {
      * @var array
      */
     private $mimeTypes = array(
-            'image/jpeg',
-            'image/gif',
-            'application/octet-stream', //bmp files
-            'image/tiff',
-            'application/pdf',
-            'image/jpeg',
+        'image/jpeg',
+        'image/gif',
+        'application/octet-stream', //bmp files
+        'image/tiff',
+        'application/pdf',
+        'image/jpeg',
     );
 
     /**
@@ -64,11 +64,8 @@ class OCRCheck {
         $languages = Langs_Languages::getInstance();
 
         if( array_search( $this->source_lang, $languages::getLanguagesWithOcrSupported() ) === false ){
-            /**
-             * @var $finfo finfo
-             */
-            $finfo = new finfo();
-            $mimeType = $finfo->file( $filePath, FILEINFO_MIME_TYPE );
+
+            $mimeType = (new MimeTypes())->guessMimeType($filePath);
             if( array_search( $mimeType, $this->mimeTypes ) !== false  ){
                 return true;
             }
@@ -78,6 +75,11 @@ class OCRCheck {
 
     }
 
+    /**
+     * @param $filePath
+     *
+     * @return bool
+     */
     public function thereIsError( $filePath ){
 
         if( !INIT::$FILTERS_OCR_CHECK ){
@@ -87,11 +89,8 @@ class OCRCheck {
         $languages = Langs_Languages::getInstance();
 
         if( array_search( $this->source_lang, $languages::getLanguagesWithOcrNotSupported() ) !== false ){
-            /**
-             * @var $finfo finfo
-             */
-            $finfo = new finfo();
-            $mimeType = $finfo->file( $filePath, FILEINFO_MIME_TYPE );
+
+            $mimeType = (new MimeTypes())->guessMimeType($filePath);
             if( array_search( $mimeType, $this->mimeTypes ) !== false  ){
                 return true;
             }
