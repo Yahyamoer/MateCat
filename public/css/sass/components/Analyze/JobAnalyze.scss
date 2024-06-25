@@ -1,5 +1,6 @@
 @import '../../commons/_colors';
 
+
 .job-analyze-header {
   background-color: $grey2;
   display: flex;
@@ -28,7 +29,7 @@
 }
 
 .chunks-analyze {
-  padding: 0 0 16px 0;
+  padding:0 0 16px 0;
   padding-left: 0 !important;
   padding-right: 0 !important;
   width: 100%;
@@ -37,14 +38,11 @@
 
 .job-table-header {
   display: grid;
-  grid-template-columns: minmax(100px, 150px) repeat(11, 1fr) minmax(
-      80px,
-      100px
-    );
+  grid-template-columns: minmax(100px, 150px) repeat(11, 1fr) minmax(80px, 100px);
   grid-template-rows: 100px;
   padding: 0 !important;
   border-bottom: 1px solid $grey3;
-  background-color: $grey4;
+  background-color: $grey4 ;
   > div {
     &:first-child {
       border-left: none;
@@ -110,10 +108,7 @@
   padding: 0 !important;
   .chunk-analyze-info {
     display: grid;
-    grid-template-columns: minmax(100px, 150px) repeat(11, 1fr) minmax(
-        80px,
-        100px
-      );
+    grid-template-columns: minmax(100px, 150px) repeat(11, 1fr) minmax(80px, 100px);
     padding-top: 16px;
     background-color: $white;
     position: relative;
@@ -198,10 +193,7 @@
 }
 
 .chunk-file-detail {
-  grid-template-columns: minmax(100px, 150px) repeat(11, 1fr) minmax(
-      80px,
-      100px
-    );
+  grid-template-columns: minmax(100px, 150px) repeat(11, 1fr) minmax(80px, 100px);
   grid-template-rows: 24px;
   display: grid;
   padding: 0;
@@ -217,13 +209,14 @@
     opacity: 0.1;
     &.last {
       border-radius: 0 0 4px 4px;
+
     }
   }
   :first-child {
     border-right: none;
     justify-content: left;
   }
-  > div {
+  >div {
     border-right: 1px solid $grey3;
     justify-content: right;
     display: flex;
@@ -261,3 +254,4 @@
     border-right: none;
   }
 }
+
