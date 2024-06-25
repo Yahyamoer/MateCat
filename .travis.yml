@@ -9,6 +9,7 @@ branches:
     #   - develop
     - /^v?(\d+\.)?(\d+\.)?(\d+)(-[a-z\d]+)?$/
     - freddy
+    - refactory-on-get-browser
     #  - master
 
 git:
@@ -27,6 +28,9 @@ before_install:
 
 script:
   - |
+    
+    # Run tests
+    docker-compose -f docker/docker-compose-ci.yml up test-node --exit-code-from test-node || exit 1
 
     if [[ ! -z "${TRAVIS_TAG}" ]] ; then
 
