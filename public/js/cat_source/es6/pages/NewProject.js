@@ -282,7 +282,8 @@ const NewProject = ({
     const isGuessTagEnabled =
       checkGuessTagIsEnabled({sourceLang, targetLangs}).arrayIntersection
         .length > 0
-
+    // update store recently used target languages
+    setRecentlyUsedLanguages(targetLangs)
     const getParams = () => ({
       action: 'createProject',
       file_name: APP.getFilenameFromUploadedFiles(),
