@@ -214,6 +214,8 @@ const NewProject = ({
       r: true,
       w: true,
       owner: true,
+      tm: true,
+      glos: true,
       name: 'No Description',
       key: tmKeyFromQueryString,
       is_shared: false,
@@ -607,7 +609,10 @@ const NewProject = ({
         const isMatched = prevTemplate.tm.some(
           ({key}) => key === tmKeyFromQueryString,
         )
-        const tmFound = tmKeys.find(({key}) => key === tmKeyFromQueryString)
+        // eslint-disable-next-line
+        const {id, isActive, ...tmFound} = tmKeys.find(
+          ({key}) => key === tmKeyFromQueryString,
+        )
 
         return {
           ...prevTemplate,
@@ -622,9 +627,7 @@ const NewProject = ({
               }))
             : [
                 ...prevTemplate.tm,
-                ...(tmFound
-                  ? [{...tmFound, isActive: true, r: true, w: true}]
-                  : []),
+                ...(tmFound ? [{...tmFound, r: true, w: true}] : []),
               ],
         }
       })
