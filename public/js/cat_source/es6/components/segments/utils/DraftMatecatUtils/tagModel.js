@@ -155,6 +155,7 @@ const tagSignaturesMap = {
     showTooltip: false,
     replaceForLexiqa: true,
     lexiqaText: '\n',
+    convertToLexiqaIgnoreAnglesBrackets: true,
   },
   lineFeed: {
     type: 'lineFeed',
@@ -172,6 +173,7 @@ const tagSignaturesMap = {
     showTooltip: false,
     replaceForLexiqa: true,
     lexiqaText: '\n',
+    convertToLexiqaIgnoreAnglesBrackets: true,
   },
   splitPoint: {
     type: 'splitpoint',
