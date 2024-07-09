@@ -188,6 +188,7 @@ class INIT {
     /**
      * The MateCat Version
      */
+    //TODO: Rename variable to MATECAT_VERSION
     public static $BUILD_NUMBER;
 
     /**
@@ -252,7 +253,6 @@ class INIT {
     public static $OAUTH_SCOPES;
     public static $OAUTH_BROWSER_API_KEY;
 
-    public static $ENABLE_OMEGAT_DOWNLOAD = false;
     public static $UNLOCKABLE_TAGS        = false;
 
     public static $SKIP_SQL_CACHE = false;
