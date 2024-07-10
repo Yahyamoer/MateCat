@@ -35,7 +35,6 @@ import useProjectTemplates, {SCHEMA_KEYS} from '../hooks/useProjectTemplates'
 import {TemplateSelect} from '../components/settingsPanel/ProjectTemplate/TemplateSelect'
 import {checkLexiqaIsEnabled} from '../components/settingsPanel/Contents/AdvancedOptionsTab/Lexiqa'
 import {checkGuessTagIsEnabled} from '../components/settingsPanel/Contents/AdvancedOptionsTab/GuessTag'
-import {useGoogleLoginNotification} from '../hooks/useGoogleLoginNotification'
 import {getMMTKeys} from '../api/getMMTKeys/getMMTKeys'
 import {AlertDeleteResourceProjectTemplates} from '../components/modals/AlertDeleteResourceProjectTemplates'
 import {getDeepLGlosssaries} from '../api/getDeepLGlosssaries/getDeepLGlosssaries'
@@ -90,9 +89,6 @@ const NewProject = ({
   } = useProjectTemplates(tmKeys)
 
   const isDeviceCompatible = useDeviceCompatibility()
-
-  // TODO: Remove temp notification warning login google (search in files this todo)
-  useGoogleLoginNotification()
 
   const projectNameRef = useRef()
   const prevSourceLang = useRef(sourceLang)
