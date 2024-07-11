@@ -15,7 +15,9 @@
         <prop type="x-MateCAT-id_segment">196899968</prop>
         <prop type="x-MateCAT-filename">va-_per_trad_eng_02.docx</prop>
         <prop type="x-MateCAT-status">TRANSLATED</prop>
-        
+        <prop type="x-context-pre"></prop>
+        <prop type="x-context-post">3.2.1	il lato emozionale della vita della mente</prop>
+
         <tuv xml:lang="it-IT">
             <seg>3.2	comprendere la qualità della vita affettiva</seg>
         </tuv>
@@ -29,7 +31,9 @@
         <prop type="x-MateCAT-id_segment">196899969</prop>
         <prop type="x-MateCAT-filename">va-_per_trad_eng_02.docx</prop>
         <prop type="x-MateCAT-status">TRANSLATED</prop>
-        
+        <prop type="x-context-pre">3.2	comprendere la qualità della vita affettiva</prop>
+        <prop type="x-context-post"></prop>
+
         <tuv xml:lang="it-IT">
             <seg>3.2.1	il lato emozionale della vita della mente</seg>
         </tuv>
