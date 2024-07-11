@@ -107,6 +107,7 @@ function CatTool() {
           return modifiedTemplate
         })
       })
+      .catch(() => setTmKeys([]))
       .finally(() => getMTEngines(modifiedTemplate))
   }
 
