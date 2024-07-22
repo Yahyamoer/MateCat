@@ -474,7 +474,6 @@ class ProjectManager {
     public function sanitizeProjectStructure() {
 
         $this->projectStructure[ 'result' ][ 'errors' ] = new ArrayObject();
-
         $this->_sanitizeProjectName();
         $this->_validateUploadToken();
         $this->_validateXliffParameters();
@@ -853,7 +852,6 @@ class ProjectManager {
                         throw $e;
                     }
                 }
-
             }
 
             //Allow projects with less than 250.000 words or characters ( for cjk languages )
@@ -879,7 +877,8 @@ class ProjectManager {
 
             if ( $e->getCode() == -1 ) {
                 $this->projectStructure[ 'result' ][ 'errors' ][] = [
-                        "code" => -1, "message" => "No text to translate in the file {$e->getMessage()}."
+                    "code" => -1,
+                    "message" => "No text to translate in the file {$e->getMessage()}."
                 ];
                 if ( INIT::$FILE_STORAGE_METHOD != 's3' ) {
                     $fs->deleteHashFromUploadDir( $this->uploadDir, $linkFile );
@@ -899,10 +898,10 @@ class ProjectManager {
                         "message" => $message,
                 ];
             } else {
-
                 //Generic error
                 $this->projectStructure[ 'result' ][ 'errors' ][] = [
-                        "code" => $e->getCode(), "message" => $e->getMessage()
+                    "code" => $e->getCode(),
+                    "message" => $e->getMessage()
                 ];
             }
 
@@ -2084,7 +2083,10 @@ class ProjectManager {
                             $this->__addNotesToProjectStructure( $xliff_trans_unit, $fid );
                             $this->__addTUnitContextsToProjectStructure( $xliff_trans_unit, $fid );
                         } catch ( Exception $exception ) {
-                            throw new Exception( $exception->getMessage(), -1 );
+                            throw new Exception(
+                                $exception->getMessage(),
+                                $exception->getCode() ?? -1
+                            );
                         }
 
                         //
@@ -2585,7 +2587,6 @@ class ProjectManager {
             $engine->set( $config );
 
         }
-
     }
 
     /**
@@ -2686,7 +2687,6 @@ class ProjectManager {
 
         //clean translations and queries
         unset( $query_translations_values );
-
     }
 
     /**
@@ -2769,7 +2769,7 @@ class ProjectManager {
         if ( isset( $trans_unit[ 'notes' ] ) ) {
 
             if ( count( $trans_unit[ 'notes' ] ) > self::SEGMENT_NOTES_LIMIT ) {
-                throw new Exception( ' a segment can have a maximum of ' . self::SEGMENT_NOTES_LIMIT . ' notes' );
+                throw new Exception( 'File upload failed: a segment can have a maximum of ' . self::SEGMENT_NOTES_LIMIT . ' notes.', -44 );
             }
 
             foreach ( $trans_unit[ 'notes' ] as $note ) {
