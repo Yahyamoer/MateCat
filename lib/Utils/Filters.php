@@ -257,12 +257,14 @@ class Filters {
 
     /**
      * Logs a conversion to xliff, doing also file backup in case of failure.
+     *
      * @param $response
      * @param $sentFile
      * @param $sourceLang
      * @param $targetLang
      * @param $segmentation
      * @param $extractionParameters
+     *
      * @throws Exception
      */
     public static function logConversionToXliff( $response, $sentFile, $sourceLang, $targetLang, $segmentation, $extractionParameters ) {
@@ -273,10 +275,12 @@ class Filters {
 
     /**
      * Logs a conversion to target, doing also file backup in case of failure.
+     *
      * @param $response
      * @param $sentFile
      * @param $jobData
      * @param $sourceFileData
+     *
      * @throws Exception
      */
     public static function logConversionToTarget( $response, $sentFile, $jobData, $sourceFileData ) {
@@ -287,11 +291,13 @@ class Filters {
      * Logs every conversion made. In order to make this method work, ensure
      * you have the matecat_conversions_log database properly configured.
      * See /lib/Model/matecat_conversions_log.sql
+     *
      * @param $response
      * @param $toXliff
      * @param $sentFile
      * @param $jobData
      * @param $sourceFileData
+     *
      * @throws Exception
      */
     private static function logConversion( $response, $toXliff, $sentFile, $jobData, $sourceFileData ) {

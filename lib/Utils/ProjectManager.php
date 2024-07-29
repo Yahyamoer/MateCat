@@ -20,7 +20,6 @@ use Files\MetadataDao;
 use FilesStorage\AbstractFilesStorage;
 use FilesStorage\FilesStorageFactory;
 use FilesStorage\S3FilesStorage;
-use FiltersXliffConfig\Xliff\DTO\XliffConfigModel;
 use Jobs\SplitQueue;
 use LQA\QA;
 use Matecat\SubFiltering\MateCatFilter;
@@ -38,6 +37,8 @@ use TMS\TMSFile;
 use TMS\TMSService;
 use Translators\TranslatorsModel;
 use WordCount\CounterModel;
+use Xliff\DTO\XliffRulesModel;
+use Xliff\XliffConfigTemplateStruct;
 
 class ProjectManager {
 
@@ -163,19 +164,19 @@ class ProjectManager {
                             'notes'                                   => [],
                             'context-group'                           => [],
                         //one translation for every file because translations are files related
-                    'status'                        => Constants_ProjectStatus::STATUS_NOT_READY_FOR_ANALYSIS,
-                    'job_to_split'                  => null,
-                    'job_to_split_pass'             => null,
-                    'split_result'                  => null,
-                    'job_to_merge'                  => null,
-                    'lang_detect_files'             => [],
-                    'tm_keys'                       => [],
-                    'userIsLogged'                  => false,
-                    'uid'                           => null,
-                    'pretranslate_100'              => 0,
-                    'pretranslate_101'             => 1,
-                    'only_private'                  => 0,
-                    'owner'                         => '',
+                            'status'                                  => Constants_ProjectStatus::STATUS_NOT_READY_FOR_ANALYSIS,
+                            'job_to_split'                            => null,
+                            'job_to_split_pass'                       => null,
+                            'split_result'                            => null,
+                            'job_to_merge'                            => null,
+                            'lang_detect_files'                       => [],
+                            'tm_keys'                                 => [],
+                            'userIsLogged'                            => false,
+                            'uid'                                     => null,
+                            'pretranslate_100'                        => 0,
+                            'pretranslate_101'                        => 1,
+                            'only_private'                            => 0,
+                            'owner'                                   => '',
                             Projects_MetadataDao::WORD_COUNT_TYPE_KEY => Projects_MetadataDao::WORD_COUNT_RAW,
                             'metadata'                                => [],
                             'id_assignee'                             => null,
@@ -192,7 +193,7 @@ class ProjectManager {
                             'mmt_glossaries'                          => null,
                             'deepl_formality'                         => null,
                             'deepl_id_glossary'                       => null,
-                            'filters_extraction_parameters'           => null,
+                            'filters_extraction_parameters'           => new RecursiveArrayObject(),
                             'xliff_parameters'                        => new RecursiveArrayObject()
                     ] );
         }
@@ -309,7 +310,7 @@ class ProjectManager {
             }
 
             // when the request comes from ProjectCreation daemon, it is already an ArrayObject
-            $this->projectStructure[ 'xliff_parameters' ] = XliffConfigModel::fromArrayObject( $this->projectStructure[ 'xliff_parameters' ] );
+            $this->projectStructure[ 'xliff_parameters' ] = XliffRulesModel::fromArrayObject( $this->projectStructure[ 'xliff_parameters' ] );
 
         } catch ( DomainException $ex ) {
             $this->projectStructure[ 'result' ][ 'errors' ][] = [
@@ -386,7 +387,7 @@ class ProjectManager {
         }
 
         // xliff_parameters
-        if ( isset( $this->projectStructure[ 'xliff_parameters' ] ) and $this->projectStructure[ 'xliff_parameters' ] instanceof XliffConfigModel ) {
+        if ( isset( $this->projectStructure[ 'xliff_parameters' ] ) and $this->projectStructure[ 'xliff_parameters' ] instanceof XliffConfigTemplateStruct ) {
             $configModel                   = $this->projectStructure[ 'xliff_parameters' ];
             $options[ 'xliff_parameters' ] = json_encode( $configModel );
         }
@@ -1922,7 +1923,7 @@ class ProjectManager {
                                         $src = CatUtils::trimAndStripFromAnHtmlEntityDecoded( $extract_external[ 'seg' ] );
                                         $trg = CatUtils::trimAndStripFromAnHtmlEntityDecoded( $target_extract_external[ 'seg' ] );
 
-                                        if ( $this->__isTranslated( $src, $trg, $stateValues[ 'state' ], $stateValues[ 'state-qualifier' ] ) && !is_numeric( $src ) && !empty( $trg ) ) { //treat 0,1,2... as translated content!
+                                        if ( $this->__isTranslated( $src, $trg, $stateValues[ 'state' ], $stateValues[ 'state-qualifier' ] ) && !empty( $trg ) ) { //treat 0,1,2... as translated content!
 
                                             $target = $this->filter->fromRawXliffToLayer0( $target_extract_external[ 'seg' ] );
 
@@ -2055,7 +2056,7 @@ class ProjectManager {
 
                                 $target_extract_external = $this->_strip_external( $xliff_trans_unit[ 'target' ][ 'raw-content' ], $xliffInfo );
 
-                                if ( $this->__isTranslated( $xliff_trans_unit[ 'source' ][ 'raw-content' ], $target_extract_external[ 'seg' ], $stateValues[ 'state' ], $stateValues[ 'state-qualifier' ] ) && !is_numeric( $xliff_trans_unit[ 'source' ][ 'raw-content' ] ) && !empty( $target_extract_external[ 'seg' ] ) ) {
+                                if ( $this->__isTranslated( $xliff_trans_unit[ 'source' ][ 'raw-content' ], $target_extract_external[ 'seg' ], $stateValues[ 'state' ], $stateValues[ 'state-qualifier' ] ) && !empty( $target_extract_external[ 'seg' ] ) ) {
 
                                     $target = $this->filter->fromRawXliffToLayer0( $target_extract_external[ 'seg' ] );
 
@@ -2621,7 +2622,7 @@ class ProjectManager {
                 }
 
                 /**
-                 * @var $configModel XliffConfigModel
+                 * @var $configModel XliffRulesModel
                  */
                 $configModel = $this->projectStructure[ 'xliff_parameters' ];
                 $stateValues = $this->getTargetStatesFromTransUnit( $translation_row[ 4 ], $position );
@@ -2660,6 +2661,7 @@ class ProjectManager {
                         'segment_hash'           => $translation_row [ 3 ],
                         'status'                 => $rule->asEditorStatus(),
                         'translation'            => $filter->fromLayer1ToLayer0( $check->getTargetSeg() ),
+                        'suggestion'             => $filter->fromLayer1ToLayer0( $check->getTargetSeg() ),
                         'locked'                 => 0, // not allowed to change locked status for pre-translations
                         'match_type'             => $rule->asMatchType(),
                         'eq_word_count'          => $rule->asEquivalentWordCount( (int)$segment->raw_word_count, $payable_rates ),
@@ -3028,17 +3030,17 @@ class ProjectManager {
      * This function returns true or false based on user-defined rules, or XLIFF states as the default behavior.
      * This function is used to filter out segments from the analysis queue and to allow working directly on their states and payable rates.
      *
-     * @param string      $source
-     * @param string      $target
+     * @param string|null $source
+     * @param string|null $target
      * @param string|null $state
      * @param string|null $stateQualifier
      *
      * @return bool
      */
-    private function __isTranslated( $source, $target, $state = null, $stateQualifier = null ) {
+    private function __isTranslated( string $source = null, string $target = null, string $state = null, string $stateQualifier = null ): bool {
 
         /**
-         * @var $configModel XliffConfigModel
+         * @var $configModel XliffRulesModel
          */
         $configModel = $this->projectStructure[ 'xliff_parameters' ];
         $rule        = $configModel->getMatchingRule(
