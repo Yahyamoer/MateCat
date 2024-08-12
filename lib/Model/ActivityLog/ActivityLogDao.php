@@ -49,17 +49,15 @@ class ActivityLogDao extends DataAccess_AbstractDao {
     public function create( ActivityLogStruct $activityStruct ) {
 
         $conn             = Database::obtain()->getConnection();
-        $jobStructToArray = $activityStruct->toArray(
-                [
-                        'id_job',
-                        'id_project',
-                        'uid',
-                        'action',
-                        'ip',
-                        'event_date',
-                        'memory_key'
-                )
-        );
+        $jobStructToArray = $activityStruct->toArray([
+            'id_job',
+            'id_project',
+            'uid',
+            'action',
+            'ip',
+            'event_date',
+            'memory_key'
+        ]);
         $columns          = array_keys( $jobStructToArray );
         $values           = array_values( $jobStructToArray );
 
