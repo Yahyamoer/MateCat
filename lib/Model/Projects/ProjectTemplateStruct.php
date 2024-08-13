@@ -4,14 +4,7 @@ namespace Projects;
 
 use DataAccess_AbstractDaoSilentStruct;
 use DataAccess_IDaoStruct;
-use Exception;
 use JsonSerializable;
-use PayableRates\CustomPayableRateDao;
-use PayableRates\CustomPayableRateStruct;
-use QAModelTemplate\QAModelTemplateDao;
-use QAModelTemplate\QAModelTemplateStruct;
-use Teams\TeamDao;
-use Teams\TeamStruct;
 
 class ProjectTemplateStruct extends DataAccess_AbstractDaoSilentStruct implements DataAccess_IDaoStruct, JsonSerializable {
     public $id;
@@ -42,10 +35,10 @@ class ProjectTemplateStruct extends DataAccess_AbstractDaoSilentStruct implement
      *
      * @return $this
      */
-    public function hydrateFromJSON( string $json, int $uid ): ProjectTemplateStruct {
+    public function hydrateFromJSON( string $json, int $uid, ?int $id = null ): ProjectTemplateStruct {
         $json = json_decode( $json );
 
-        $this->id                       = $json->id;
+        $this->id                       = $json->id ?? $id;
         $this->uid                      = $json->uid ?? $uid;
         $this->name                     = $json->name;
         $this->is_default               = ( isset( $json->is_default ) ) ? $json->is_default : false;
@@ -174,49 +167,6 @@ class ProjectTemplateStruct extends DataAccess_AbstractDaoSilentStruct implement
         }
 
         return $this->mt;
-    }
-
-    /**
-     * @return TeamStruct|null
-     */
-    public function getTeam() {
-        if ( is_null( $this->id_team ) ) {
-            return null;
-        }
-
-        $dao = new TeamDao();
-
-        return $dao->findById( $this->id_team );
-    }
-
-    /**
-     * @return CustomPayableRateStruct|null
-     */
-    public function getPayableRate() {
-        if ( is_null( $this->payable_rate_template_id ) ) {
-            return null;
-        }
-
-        return CustomPayableRateDao::getById( $this->payable_rate_template_id );
-    }
-
-    /**
-     * @return QAModelTemplateStruct|null
-     */
-    public function getQATemplateModel() {
-        if ( is_null( $this->qa_model_template_id ) ) {
-            return null;
-        }
-
-        $qaModels = QAModelTemplateDao::get( [
-                'id' => $this->qa_model_template_id
-        ] );
-
-        if ( count( $qaModels ) == 1 ) {
-            return $qaModels[ 0 ];
-        }
-
-        return null;
     }
 
     /**

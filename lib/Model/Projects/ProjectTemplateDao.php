@@ -120,14 +120,15 @@ class ProjectTemplateDao extends DataAccess_AbstractDao {
     /**
      * @param ProjectTemplateStruct $projectTemplateStruct
      * @param string                $json
+     * @param int                   $id
      * @param int                   $uid
      *
      * @return ProjectTemplateStruct
      * @throws Exception
      */
-    public static function editFromJSON( ProjectTemplateStruct $projectTemplateStruct, string $json, int $uid ): ProjectTemplateStruct {
+    public static function editFromJSON( ProjectTemplateStruct $projectTemplateStruct, string $json, int $id, int $uid ): ProjectTemplateStruct {
 
-        $projectTemplateStruct->hydrateFromJSON( $json, $uid );
+        $projectTemplateStruct->hydrateFromJSON( $json, $uid, $id );
 
         self::checkValues( $projectTemplateStruct );
 
@@ -158,66 +159,55 @@ class ProjectTemplateDao extends DataAccess_AbstractDao {
             $team = $teamDao->findById( $projectTemplateStruct->id_team );
 
             if ( $team === null ) {
-                throw new Exception( "User group not found." );
+                throw new Exception( "User group not found.", 404 );
             }
 
             if ( !$team->hasUser( $projectTemplateStruct->uid ) ) {
-                throw new Exception( "This user does not belong to this group." );
+                throw new Exception( "This user does not belong to this group.", 403 );
             }
         }
 
         // check xliff_config_template_id
         if ( $projectTemplateStruct->xliff_config_template_id > 0 ) {
-            $xliffConfigModel = XliffConfigTemplateDao::getById( $projectTemplateStruct->xliff_config_template_id );
+            $xliffConfigModel = XliffConfigTemplateDao::getByIdAndUser( $projectTemplateStruct->xliff_config_template_id, $projectTemplateStruct->uid );
 
             if ( empty( $xliffConfigModel ) ) {
-                throw new Exception( "Not existing Xliff template." );
+                throw new Exception( "Not existing Xliff template.", 404 );
             }
 
-            if ( $xliffConfigModel->uid !== $projectTemplateStruct->uid ) {
-                throw new Exception( "Xliff model doesn't belong to the user." );
-            }
         }
 
         // check filters_template_id
         if ( $projectTemplateStruct->filters_template_id > 0 ) {
-            $filtersConfigModel = FiltersConfigTemplateDao::getById( $projectTemplateStruct->filters_template_id );
+            $filtersConfigModel = FiltersConfigTemplateDao::getByIdAndUser( $projectTemplateStruct->filters_template_id, $projectTemplateStruct->uid );
 
             if ( empty( $filtersConfigModel ) ) {
-                throw new Exception( "Not existing Filters config template." );
+                throw new Exception( "Not existing Filters config template.", 404 );
             }
 
-            if ( $filtersConfigModel->uid !== $projectTemplateStruct->uid ) {
-                throw new Exception( "Filters config model doesn't belong to the user." );
-            }
         }
 
         // check qa_id
         if ( $projectTemplateStruct->qa_model_template_id > 0 ) {
-            $qaModel = QAModelTemplateDao::get( [
-                    'id' => $projectTemplateStruct->qa_model_template_id
+            $qaModel = QAModelTemplateDao::getQaModelTemplateByIdAndUid( Database::obtain()->getConnection(), [
+                    'id'  => $projectTemplateStruct->qa_model_template_id,
+                    'uid' => $projectTemplateStruct->uid
             ] );
 
             if ( empty( $qaModel ) ) {
-                throw new Exception( "Not existing QA template." );
+                throw new Exception( "Not existing QA template.", 404 );
             }
 
-            if ( $qaModel->uid !== $projectTemplateStruct->uid ) {
-                throw new Exception( "QA model doesn't belong to the user." );
-            }
         }
 
         // check pr_id
         if ( $projectTemplateStruct->payable_rate_template_id > 0 ) {
-            $payableRateModel = CustomPayableRateDao::getById( $projectTemplateStruct->payable_rate_template_id );
+            $payableRateModel = CustomPayableRateDao::getByIdAndUser( $projectTemplateStruct->payable_rate_template_id, $projectTemplateStruct->uid );
 
             if ( empty( $payableRateModel ) ) {
-                throw new Exception( "Not existing payable rate template." );
+                throw new Exception( "Not existing payable rate template.", 404 );
             }
 
-            if ( $payableRateModel->uid !== $projectTemplateStruct->uid ) {
-                throw new Exception( "Billing model doesn't belong to the user." );
-            }
         }
 
         // check mt
@@ -233,8 +223,8 @@ class ProjectTemplateDao extends DataAccess_AbstractDao {
 
                 $engineRecord = $engine->getEngineRecord();
 
-                if ( $engineRecord->id > 1 and $engineRecord->uid !== $projectTemplateStruct->uid ) {
-                    throw new Exception( "Engine doesn't belong to the user." );
+                if ( $engineRecord->id > 1 and $engineRecord->uid != $projectTemplateStruct->uid ) {
+                    throw new Exception( "Engine doesn't belong to the user.", 403 );
                 }
             }
         }
@@ -254,7 +244,7 @@ class ProjectTemplateDao extends DataAccess_AbstractDao {
                 );
 
                 if ( empty( $keyRing ) ) {
-                    throw new Exception( "TM key doesn't belong to the user." );
+                    throw new Exception( "TM key doesn't belong to the user.", 403 );
                 }
             }
         }
@@ -284,14 +274,7 @@ class ProjectTemplateDao extends DataAccess_AbstractDao {
         $paginationParameters = new PaginationParameters( static::query_paginated, [ 'uid' => $uid ], ProjectTemplateStruct::class, $baseRoute, $current, $pagination );
         $paginationParameters->setCache( self::paginated_map_key . ":" . $uid, $ttl );
 
-        $result = $pager->getPagination( $totals, $paginationParameters );
-
-        $models   = [];
-        $models[] = self::getDefaultTemplate( $uid ); // YYY REMOVE
-
-        $result[ 'items' ] = array_merge( $models, $result[ 'items' ] );
-
-        return $result;
+        return $pager->getPagination( $totals, $paginationParameters );
 
     }
 
