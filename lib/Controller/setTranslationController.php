@@ -265,7 +265,7 @@ class setTranslationController extends ajaxController {
     }
 
     /**
-     * @throws \API\V2\Exceptions\AuthenticationError
+     * @throws \API\Commons\Exceptions\AuthenticationError
      * @throws \Exceptions\ValidationError
      * @throws \TaskRunner\Exceptions\EndQueueException
      * @throws \TaskRunner\Exceptions\ReQueueException
@@ -874,7 +874,7 @@ class setTranslationController extends ajaxController {
      *
      * @throws Exception
      * @throws NotFoundException
-     * @throws \API\V2\Exceptions\AuthenticationError
+     * @throws \API\Commons\Exceptions\AuthenticationError
      * @throws \Exceptions\ValidationError
      */
     private function evalSetContribution( $_Translation, $old_translation ) {
