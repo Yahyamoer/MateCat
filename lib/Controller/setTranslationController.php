@@ -2,7 +2,7 @@
 
 use Contribution\ContributionSetStruct;
 use Contribution\Set;
-use EditLog\EditLogSegmentClientStruct;
+use EditLog\EditLogSegmentStruct;
 use Exceptions\ControllerReturnException;
 use Exceptions\NotFoundException;
 use Features\ReviewExtended\ReviewUtils;
@@ -794,13 +794,13 @@ class setTranslationController extends ajaxController {
         }
 
         $segmentRawWordCount  = $this->segment->raw_word_count;
-        $editLogSegmentStruct = new EditLogSegmentClientStruct(
-            [
-                'suggestion'     => $old_translation[ 'suggestion' ],
-                'translation'    => $old_translation[ 'translation' ],
-                'raw_word_count' => $segmentRawWordCount,
-                'time_to_edit'   => $old_translation[ 'time_to_edit' ] + $new_translation[ 'time_to_edit' ]
-            ]
+        $editLogSegmentStruct = new EditLogSegmentStruct(
+                [
+                        'suggestion'     => $old_translation[ 'suggestion' ],
+                        'translation'    => $old_translation[ 'translation' ],
+                        'raw_word_count' => $segmentRawWordCount,
+                        'time_to_edit'   => $old_translation[ 'time_to_edit' ] + $new_translation[ 'time_to_edit' ]
+                ]
         );
 
         $oldSegmentStatus               = clone $editLogSegmentStruct;
@@ -809,8 +809,7 @@ class setTranslationController extends ajaxController {
         $oldPEE          = $editLogSegmentStruct->getPEE();
         $oldPee_weighted = $oldPEE * $segmentRawWordCount;
 
-        $editLogSegmentStruct->translation    = $new_translation[ 'translation' ];
-        $editLogSegmentStruct->pe_effort_perc = null;
+        $editLogSegmentStruct->translation = $new_translation[ 'translation' ];
 
         $newPEE          = $editLogSegmentStruct->getPEE();
         $newPee_weighted = $newPEE * $segmentRawWordCount;
