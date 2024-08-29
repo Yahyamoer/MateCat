@@ -32,11 +32,11 @@ class GlossaryController extends KleinController {
      * @throws InvalidValue
      * @throws ReflectionException
      */
-    public function check() {
+    public function check()
+    {
         $jsonSchemaPath = INIT::$ROOT . '/inc/validation/schema/glossary/check.json';
-        $json           = $this->createThePayloadForWorker( $jsonSchemaPath );
-
-         $json[ 'tmKeys' ] = $this->keysBelongingToJobOwner($json[ 'tmKeys']);
+        $json = $this->createThePayloadForWorker($jsonSchemaPath);
+        $json['tmKeys'] = $this->keysBelongingToJobOwner($json['tmKeys']);
 
         // filter the keys sent by the FE
         $tmKeys = $json['tmKeys'];
@@ -108,13 +108,11 @@ class GlossaryController extends KleinController {
      * @throws ReflectionException
      * @throws InvalidValue
      */
-    public function get() {
+    public function get()
+    {
         $jsonSchemaPath = INIT::$ROOT . '/inc/validation/schema/glossary/get.json';
-        $json           = $this->createThePayloadForWorker( $jsonSchemaPath );
-
-         $json[ 'tmKeys' ] = $this->keysBelongingToJobOwner(
-
-        $json[ 'tmKeys' ] );
+        $json = $this->createThePayloadForWorker($jsonSchemaPath);
+        $json['tmKeys'] = $this->keysBelongingToJobOwner($json['tmKeys']);
 
         $params = [
                 'action'  => 'get',
@@ -159,9 +157,10 @@ class GlossaryController extends KleinController {
      * @throws ReflectionException
      * @throws InvalidValue
      */
-    public function search() {
+    public function search()
+    {
         $jsonSchemaPath = INIT::$ROOT . '/inc/validation/schema/glossary/search.json';
-        $json           = $this->createThePayloadForWorker( $jsonSchemaPath );
+        $json = $this->createThePayloadForWorker($jsonSchemaPath);
         $json['tmKeys'] = $this->keysBelongingToJobOwner($json['tmKeys']);
 
         $params = [

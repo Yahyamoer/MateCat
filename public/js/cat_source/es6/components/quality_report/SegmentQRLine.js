@@ -13,7 +13,7 @@ const SegmentQRLine = ({
   showIceMatchInfo = false,
   tte,
   showIsPretranslated,
-  rev,
+  rev
 }) => {
   const textRef = useRef()
   const allowHTML = (string) => {
@@ -171,6 +171,12 @@ const SegmentQRLine = ({
             <b>Pre-Approved</b>
           </div>
         </div>
+      ) : showIsPretranslated && rev ? (
+          <div className="segment-content qr-spec">
+              <div>
+                  <b>Pre-Approved</b>
+              </div>
+          </div>
       ) : null}
       {!(showIceMatchInfo && segment.get('ice_locked') === '1') &&
       !showSuggestionSource &&
