@@ -235,7 +235,9 @@ const SegmentUtils = {
       translation: translation,
       segment: segmentSource,
       time_to_edit: UI.editTime ? UI.editTime : new Date() - UI.editStart,
-      chosen_suggestion_index: segment.choosenSuggestionIndex,
+      chosen_suggestion_index: !config.isReview
+        ? segment.choosenSuggestionIndex
+        : undefined,
       propagate: propagate,
       context_before: contextBefore,
       id_before: idBefore,
