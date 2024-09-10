@@ -175,7 +175,6 @@ const SegmentStore = assign({}, EventEmitter.prototype, {
             split_group: splitGroup,
             split_points_source: [],
             status:
-              config.word_count_type === JOB_WORD_CONT_TYPE.RAW &&
               segment.revision_number === REVISE_STEP_NUMBER.REVISE2 &&
               status.toUpperCase() === SEGMENTS_STATUS.APPROVED
                 ? SEGMENTS_STATUS.APPROVED2
