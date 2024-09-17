@@ -44,7 +44,7 @@ class Bootstrap {
         spl_autoload_register( [ 'Bootstrap', 'loadClass' ] );
         @include_once 'vendor/autoload.php';
 
-        INIT::$OAUTH_CONFIG = $OAUTH_CONFIG[ 'OAUTH_CONFIG' ];
+        INIT::$OAUTH_CONFIG = $OAUTH_CONFIG;
 
         // Overridable defaults
         INIT::$ROOT                           = self::$_ROOT; // Accessible by Apache/PHP
@@ -52,7 +52,6 @@ class Bootstrap {
         INIT::$DEFAULT_NUM_RESULTS_FROM_TM    = 3;
         INIT::$THRESHOLD_MATCH_TM_NOT_TO_SHOW = 50;
         INIT::$TRACKING_CODES_VIEW_PATH       = INIT::$ROOT . "/lib/View/templates";
-
 
         //get the environment configuration
         self::initConfig();
@@ -496,29 +495,8 @@ class Bootstrap {
         return true;
     }
 
-    /**
-     * Check if the main OAuth keys are present
-     *
-     * @return bool true if the main OAuth keys are present, false otherwise
-     */
-    public static function areOauthKeysPresent() {
-        if ( empty( INIT::$OAUTH_CLIENT_ID ) ) {
-            return false;
-        }
-
-        if ( empty( INIT::$OAUTH_CLIENT_SECRET ) ) {
-            return false;
-        }
-
-        if ( empty( INIT::$OAUTH_CLIENT_APP_NAME ) ) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function isGDriveConfigured() {
-        if ( empty( INIT::$OAUTH_BROWSER_API_KEY ) ) {
+    public static function isGDriveConfigured(): bool {
+        if ( empty( INIT::$GOOGLE_OAUTH_CLIENT_ID ) || empty( INIT::$GOOGLE_OAUTH_BROWSER_API_KEY ) ) {
             return false;
         }
 

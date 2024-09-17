@@ -77,7 +77,7 @@ class LoginController extends AbstractStatefulKleinController {
 
         if ( $user && $user->passwordMatch( $params[ 'password' ] ) && !is_null( $user->email_confirmed_at ) && is_null( $user->confirmation_token ) ) {
 
-            AuthCookie::setCredentials( $user->email, $user->uid );
+            AuthCookie::setCredentials( $user );
 
             $user->clearAuthToken();
 

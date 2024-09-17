@@ -14,8 +14,9 @@ use Users\RedeemableProject;
  */
 class OAuthSignInModel {
 
-    protected $user;
-    protected $profilePictureUrl;
+    protected $user ;
+    protected $profilePictureUrl ;
+    protected $provider;
 
     public function __construct( $firstName, $lastName, $email ) {
         if ( empty( $firstName ) ) {
@@ -67,19 +68,32 @@ class OAuthSignInModel {
             $this->_updateProfilePicture();
         }
 
-        $project = new RedeemableProject( $this->user, $_SESSION );
-        $project->tryToRedeem();
+        if ( !is_null( $this->provider ) ) {
+            $this->_updateProvider() ;
+        }
+
+        $project = new RedeemableProject($this->user, $_SESSION)  ;
+        $project->tryToRedeem()  ;
 
         return true;
     }
 
     protected function _updateProfilePicture() {
         $dao = new MetadataDao();
-        $dao->set( $this->user->uid, 'gplus_picture', $this->profilePictureUrl );
+        $dao->set($this->user->uid, $this->provider.'_picture', $this->profilePictureUrl );
     }
 
     public function setProfilePicture( $pictureUrl ) {
         $this->profilePictureUrl = $pictureUrl;
+    }
+
+    protected function _updateProvider() {
+        $dao = new MetadataDao();
+        $dao->set($this->user->uid, 'oauth_provider', $this->provider );
+    }
+
+    public function setProvider($provider) {
+        $this->provider = $provider;
     }
 
     protected function _createNewUser() {
@@ -101,9 +115,9 @@ class OAuthSignInModel {
     }
 
     protected function _authenticateUser() {
-        AuthCookie::setCredentials( $this->user->email, $this->user->uid );
-        $_SESSION[ 'cid' ] = $this->user->email;
-        $_SESSION[ 'uid' ] = $this->user->uid;
+        AuthCookie::setCredentials($this->user );
+        $_SESSION[ 'cid' ]  = $this->user->email ;
+        $_SESSION[ 'uid' ]  = $this->user->uid ;
     }
 
     protected function _welcomeNewUser() {
