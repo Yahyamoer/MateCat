@@ -396,3 +396,10 @@ i.icon {
 .ui.header {
   font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+//Old semantic style
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
