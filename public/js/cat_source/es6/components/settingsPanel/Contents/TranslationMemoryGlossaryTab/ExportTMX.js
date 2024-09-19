@@ -18,7 +18,6 @@ export const ExportTMX = ({row, onClose}) => {
 
   const isFormDisabled = false
   const isErrorExport = status && status.errors
-  const isSuccessfullExport = status && status.successfull
 
   useEffect(() => {
     if (status && status.successfull) {
@@ -74,12 +73,6 @@ export const ExportTMX = ({row, onClose}) => {
           </button>
         </div>
       </form>
-      ) : (
-      <div className="export-successfull">
-        <span>You should receive the link at {email}</span>
-        <span>Request submitted</span>
-      </div>
-      )}
     </div>
   )
 }
