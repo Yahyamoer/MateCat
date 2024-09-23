@@ -12,11 +12,11 @@ import {
   Button,
 } from '../common/Button/Button'
 import CommonUtils from '../../utils/commonUtils'
-import {logoutUser} from '../../api/logoutUser'
 import ModalsActions from '../../actions/ModalsActions'
+import useAuth from '../../hooks/useAuth'
 
 export const UserMenu = () => {
-  const {isUserLogged, userInfo} = useContext(ApplicationWrapperContext)
+  const {isUserLogged, userInfo, logout} = useContext(ApplicationWrapperContext)
 
   const loggedRender = () => {
     const {metadata, user} = userInfo
@@ -31,9 +31,7 @@ export const UserMenu = () => {
     const openPreferencesModal = () => ModalsActions.openPreferencesModal()
 
     const logoutUserFn = () => {
-      logoutUser().then(() => {
-        window.location.reload()
-      })
+      logout()
     }
 
     return (
@@ -45,7 +43,7 @@ export const UserMenu = () => {
           children: avatarImg ? (
             <img
               className="user-menu-popover-avatar"
-              src={`${avatarImg}?sz=80`}
+              src={`${avatarImg}`}
               title="Personal settings"
               alt="Profile picture"
             />
@@ -67,7 +65,7 @@ export const UserMenu = () => {
             {avatarImg ? (
               <img
                 className="user-avatar"
-                src={`${avatarImg}?sz=80`}
+                src={`${avatarImg}`}
                 title="Personal settings"
                 alt="Profile picture"
               />

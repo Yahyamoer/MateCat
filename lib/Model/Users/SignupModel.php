@@ -2,7 +2,8 @@
 
 namespace Users;
 
-use AuthCookie;
+use API\Commons\Authentication\AuthCookie;
+use API\Commons\Authentication\AuthenticationHelper;
 use Database;
 use Email\ForgotPasswordEmail;
 use Email\SignupEmail;
@@ -212,6 +213,7 @@ class SignupModel {
         }
 
         AuthCookie::setCredentials( $user );
+        AuthenticationHelper::getInstance( $_SESSION );
 
         return $user;
 

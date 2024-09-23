@@ -6,10 +6,11 @@ namespace Translations;
 use Chunks_ChunkStruct;
 use Constants_TranslationStatus;
 use DataAccess\ShapelessConcreteStruct;
+use DataAccess_AbstractDao;
 use Jobs\WarningsCountStruct;
 use ReflectionException;
 
-class WarningDao extends \DataAccess_AbstractDao {
+class WarningDao extends DataAccess_AbstractDao {
 
     protected string $_query_warnings_by_chunk = "
           SELECT count(1) AS count, jobs.id AS id_job, jobs.password
