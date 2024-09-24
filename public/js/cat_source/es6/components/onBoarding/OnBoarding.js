@@ -15,6 +15,7 @@ export const ONBOARDING_STEP = {
   REGISTER: 'register',
   PASSWORD_RESET: 'passwordReset',
   FORGOT_PASSWORD: 'forgotPassword',
+  SET_NEW_PASSWORD: 'setNewPassword',
 }
 
 export const OnBoardingContext = createContext({})
@@ -33,7 +34,6 @@ const OnBoarding = ({
 
   const backHandler = () =>
     setStep((prevState) =>
-      prevState === ONBOARDING_STEP.PASSWORD_RESET ||
       prevState === ONBOARDING_STEP.FORGOT_PASSWORD
         ? ONBOARDING_STEP.LOGIN
         : prevState,
@@ -41,9 +41,7 @@ const OnBoarding = ({
 
   const closeHandler = () => ModalsActions.onCloseModal()
 
-  const isBackButtonEnabled =
-    stepState === ONBOARDING_STEP.PASSWORD_RESET ||
-    stepState === ONBOARDING_STEP.FORGOT_PASSWORD
+  const isBackButtonEnabled = stepState === ONBOARDING_STEP.FORGOT_PASSWORD
 
   const redirectAfterLogin = () => {
     window.location.href = window.location.origin
@@ -102,6 +100,9 @@ const OnBoarding = ({
         {stepState === ONBOARDING_STEP.REGISTER && <Register />}
         {stepState === ONBOARDING_STEP.PASSWORD_RESET && <PasswordReset />}
         {stepState === ONBOARDING_STEP.FORGOT_PASSWORD && <ForgotPassword />}
+        {stepState === ONBOARDING_STEP.SET_NEW_PASSWORD && (
+          <PasswordReset newPassword={true} />
+        )}
       </div>
     </OnBoardingContext.Provider>
   )
