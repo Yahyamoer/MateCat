@@ -25,15 +25,13 @@ $klein->with( '/api/v2/projects/[:id_project]/[:password]', function () {
     route( '/analysis/status', 'GET', [ '\API\V3\StatusController', 'index' ] );
 } );
 
-route( '/api/v2/project-completion-status/[i:id_project]', 'GET', [ '\API\V2\ProjectCompletionStatus', 'status' ] );
+route( '/api/v2/project-completion-status/[i:id_project]', 'GET', ['\API\V2\ProjectCompletionStatus', 'status'] );
 
 
-$klein->with( '/api/v2/activity', function () {
-
+$klein->with('/api/v2/activity', function() {
     route( '/project/[:id_project]/[:password]', 'GET', [ '\API\V2\ActivityLogController', 'allOnProject' ] );
     route( '/project/[:id_project]/[:password]/last', 'GET', [ '\API\V2\ActivityLogController', 'lastOnProject' ] );
     route( '/job/[:id_job]/[:password]/last', 'GET', [ 'API\V2\ActivityLogController', 'lastOnJob' ] );
-
 } );
 
 $klein->with( '/api/v2/jobs/[:id_job]/[:password]', function () {
