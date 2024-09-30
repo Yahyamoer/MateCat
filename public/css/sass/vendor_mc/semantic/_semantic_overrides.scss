@@ -404,6 +404,13 @@ i.icon {
 .ui.header {
   font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+.ui.attached.button {
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) !important;
+}
+.ui.tiny.buttons .button, .ui.tiny.button {
+  font-size: 12px !important;
+}
+
 //Old semantic style
 button, input, optgroup, select, textarea {
   font-family: inherit;
