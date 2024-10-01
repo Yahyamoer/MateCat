@@ -46,6 +46,7 @@ test('renders properly', async () => {
       addEventListener: jest.fn((event, callback) => {}),
     })),
   })
+
   mswServer.use(
     http.get(
       config.basepath +
