@@ -4947,9 +4947,9 @@ human-signals@^5.0.0:
   integrity sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==
 
 husky@>=6:
-  version "9.1.5"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-9.1.5.tgz#2b6edede53ee1adbbd3a3da490628a23f5243b83"
-  integrity sha512-rowAVRUBfI0b4+niA4SJMhfQwc107VLkBUgEYYAOQAbqDCnra1nYh83hF/MDmhYs9t9n1E3DuKOrs2LYNC+0Ag==
+  version "9.1.6"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-9.1.6.tgz#e23aa996b6203ab33534bdc82306b0cf2cb07d6c"
+  integrity sha512-sqbjZKK7kf44hfdE94EoX8MZNk0n7HeW37O4YrVGCF4wzgQjp+akPAkfUK5LZ6KuR/6sqeAVuXHji+RzQgOn5A==
 
 iconv-lite@0.6.3:
   version "0.6.3"
@@ -6712,9 +6712,9 @@ postcss@^8.4.33:
     source-map-js "^1.0.2"
 
 posthog-js@^1.57.2:
-  version "1.165.1"
-  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.165.1.tgz#00ff07618429e822ad6590714fad82bf76a29144"
-  integrity sha512-ZCLQIyiYokDCyXTFanl9eUoqYF/By3ZdeeEum8oByfmq7X2THmnozZiZQMNwCMfyxTPJDJclPQVxEfg7Bb60ng==
+  version "1.166.1"
+  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.166.1.tgz#94524d9d8b696b8e99f7f746b69c5741d334de03"
+  integrity sha512-K8IpV8FJTCdwhsXFSbKj5vZ6IXNV079lukpG3cRtst2q5vMmUXRQiks7W3lOZLrjWyuJLKZDUiCeeDIUFORRuQ==
   dependencies:
     fflate "^0.4.8"
     preact "^10.19.3"
