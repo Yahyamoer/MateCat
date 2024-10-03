@@ -31,7 +31,7 @@ class ActivityLogDao extends DataAccess_AbstractDao {
         return $stmt->fetchAll() ;
     }
 
-    public function getLastActionInProject( $id_project ) {
+    public function getLastActionInProject( $id_project) {
         $conn = Database::obtain()->getConnection();
         $sql  = "SELECT users.uid, users.email, users.first_name, users.last_name, activity_log.* FROM activity_log
           JOIN (
