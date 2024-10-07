@@ -7,8 +7,8 @@
     "lint": "eslint --ignore-path .gitignore .",
     "test": "jest --watchAll",
     "coverage": "jest --silent --coverage",
-    "watch": "webpack --mode development --watch",
-    "build:dev": "webpack --mode development",
+    "watch": "sed -i \"s/version .*/version = \\\"v${npm_package_version}\\\"/g\" ./nodejs/config.ini && webpack --mode development --watch",
+    "build:dev": "sed -i \"s/version .*/version = \\\"v${npm_package_version}\\\"/g\" ./nodejs/config.ini && webpack --mode development",
     "build:production": "webpack --mode production",
     "prepare": "husky"
   },
