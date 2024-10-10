@@ -38,8 +38,8 @@ import {getSegmentsIssues} from '../api/getSegmentsIssues'
 import {sendSegmentVersionIssue} from '../api/sendSegmentVersionIssue'
 import {getSegmentVersionsIssues} from '../api/getSegmentVersionsIssues'
 import {sendSegmentVersionIssueComment} from '../api/sendSegmentVersionIssueComment'
-import CommonUtils from "../utils/commonUtils";
-import {setCurrentSegment} from "../api/setCurrentSegment";
+import CommonUtils from '../utils/commonUtils'
+import {setCurrentSegment} from '../api/setCurrentSegment'
 import {
   HIDE_UNLOCK_ALL_SEGMENTS_MODAL_STORAGE,
   UnlockAllSegmentsModal,
@@ -1585,11 +1585,6 @@ const SegmentActions = {
       tagPlaceholder,
       entityKey,
       isTarget,
-    })
-  },
-  toggleCharacterCounter: () => {
-    AppDispatcher.dispatch({
-      actionType: SegmentConstants.TOGGLE_CHARACTER_COUNTER,
     })
   },
   hideAiAssistant: () => {

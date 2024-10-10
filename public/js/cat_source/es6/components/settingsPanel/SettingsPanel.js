@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {SettingsPanelContext} from './SettingsPanelContext'
 import {ContentWrapper} from './ContentWrapper'
 import {MachineTranslationTab} from './Contents/MachineTranslationTab'
-import {AdvancedOptionsTab} from './Contents/AdvancedOptionsTab'
+import {OtherTab} from './Contents/OtherTab'
 import {TranslationMemoryGlossaryTab} from './Contents/TranslationMemoryGlossaryTab'
 import {ProjectTemplate} from './ProjectTemplate/ProjectTemplate'
 import {SCHEMA_KEYS, isStandardTemplate} from '../../hooks/useProjectTemplates'
@@ -20,6 +20,7 @@ import NewProjectConstants from '../../constants/NewProjectConstants'
 import {FileImportTab} from './Contents/FileImportTab/FileImportTab'
 import {FILTERS_PARAMS_SCHEMA_KEYS} from './Contents/FileImportTab/FiltersParams/FiltersParams'
 import {XLIFF_SETTINGS_SCHEMA_KEYS} from './Contents/FileImportTab/XliffSettings/XliffSettings'
+import {EditorSettingsTab} from './Contents/EditorSettingsTab'
 import ModalsActions from '../../actions/ModalsActions'
 
 let tabOpenFromQueryString = new URLSearchParams(window.location.search).get(
@@ -29,10 +30,11 @@ let tabOpenFromQueryString = new URLSearchParams(window.location.search).get(
 export const SETTINGS_PANEL_TABS = {
   translationMemoryGlossary: 'tm',
   machineTranslation: 'mt',
-  advancedOptions: 'options',
+  other: 'other',
   analysis: 'analysis',
   qualityFramework: 'qf',
   fileImport: 'fileImport',
+  editorSettings: 'editorSettings',
 }
 
 export const TEMPLATE_PROPS_BY_TAB = {
@@ -44,18 +46,19 @@ export const TEMPLATE_PROPS_BY_TAB = {
   [SETTINGS_PANEL_TABS.machineTranslation]: [SCHEMA_KEYS.mt],
   [SETTINGS_PANEL_TABS.qualityFramework]: [SCHEMA_KEYS.qaModelTemplateId],
   [SETTINGS_PANEL_TABS.fileImport]: [
+    SCHEMA_KEYS.segmentationRule,
     SCHEMA_KEYS.filtersTemplateId,
     SCHEMA_KEYS.XliffConfigTemplateId,
   ],
   [SETTINGS_PANEL_TABS.analysis]: [SCHEMA_KEYS.payableRateTemplateId],
-  [SETTINGS_PANEL_TABS.advancedOptions]: [
+  [SETTINGS_PANEL_TABS.other]: [
     SCHEMA_KEYS.speech2text,
     SCHEMA_KEYS.tagProjection,
     SCHEMA_KEYS.lexica,
     SCHEMA_KEYS.crossLanguageMatches,
-    SCHEMA_KEYS.segmentationRule,
     SCHEMA_KEYS.idTeam,
   ],
+  [SETTINGS_PANEL_TABS.editorSettings]: [],
 }
 
 const DEFAULT_CONTENTS = (isCattool = config.is_cattool) => {
@@ -97,14 +100,26 @@ const DEFAULT_CONTENTS = (isCattool = config.is_cattool) => {
               'Manage your billing models and select which should be used on your new project. <a href="https://guides.matecat.com/billing-model" target="_blank">More details</a>',
             component: <AnalysisTab />,
           },
+          {
+            id: SETTINGS_PANEL_TABS.other,
+            label: 'Other',
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis',
+            component: <OtherTab />,
+          },
         ]
       : []),
-    {
-      id: SETTINGS_PANEL_TABS.advancedOptions,
-      label: 'Advanced settings',
-      description: 'Advanced settings for your project',
-      component: <AdvancedOptionsTab />,
-    },
+    ...(isCattool
+      ? [
+          {
+            id: SETTINGS_PANEL_TABS.editorSettings,
+            label: 'Editor settings',
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+            component: <EditorSettingsTab />,
+          },
+        ]
+      : []),
   ]
 }
 
